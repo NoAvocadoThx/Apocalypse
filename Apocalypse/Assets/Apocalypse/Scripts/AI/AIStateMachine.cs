@@ -51,8 +51,11 @@ public abstract class AIStateMachine : MonoBehaviour
     protected Dictionary<AIStateType, AIState> _state = new Dictionary<AIStateType, AIState>();
     protected AITarget _target = new AITarget();
 
+    [SerializeField] protected AIStateType _curStateType = AIStateType.Idle;
     [SerializeField] protected SphereCollider _targetTrigger = null;
     [SerializeField] protected SphereCollider _sensorTrigger = null;
+
+    [SerializeField] [Range(0, 15)] protected float _stoppingDistance = 1.0f; 
 
     //Component cache
     protected Animator _animator = null;
@@ -65,6 +68,14 @@ public abstract class AIStateMachine : MonoBehaviour
     public NavMeshAgent navAgent { get { return _navAgent; } }
 
 
+    protected virtual void Awake()
+    {
+        _transform = transform;
+        _animator = GetComponent<Animator>();
+        _navAgent = GetComponent<NavMeshAgent>();
+        _collider = GetComponent<Collider>();
+    }
+
     protected virtual void Start()
     {
         //fetch all states on this game object
@@ -76,6 +87,60 @@ public abstract class AIStateMachine : MonoBehaviour
             {
                 _state[state.GetStateType()] = state;
             }
+        }
+    }
+
+    public void SetTarget(AITargetType t,Collider c,Vector3 p, float d)
+    {
+        _target.Set(t, c, p, d);
+        //
+        if (_targetTrigger != null)
+        {
+            _targetTrigger.radius = _stoppingDistance;
+            _targetTrigger.transform.position = _target.position;
+            _targetTrigger.enabled = true;
+        }
+    }
+
+    public void SetTarget(AITargetType t, Collider c, Vector3 p, float d,float s)
+    {
+        _target.Set(t, c, p, d);
+        if (_targetTrigger != null)
+        {
+            _targetTrigger.radius = s;
+            _targetTrigger.transform.position = _target.position;
+            _targetTrigger.enabled = true;
+        }
+    }
+
+    public void SetTarget(AITarget t)
+    {
+        _target = t;
+        if (_targetTrigger != null)
+        {
+            _targetTrigger.radius = _stoppingDistance;
+            _targetTrigger.transform.position = _target.position;
+            _targetTrigger.enabled = true;
+        }
+    }
+
+    public void ClearTarget()
+    {
+        _target.Clear();
+        if (_targetTrigger != null)
+        {
+            _targetTrigger.enabled = false;
+        }
+    }
+
+    //clear visual and audio target each frame so we re-calculate distance to the curTarget
+    protected virtual void FixedUpdate()
+    {
+        visualThreat.Clear();
+        audioThreat.Clear();
+        if (_target.type != AITargetType.None)
+        {
+            _target.distance = Vector3.Distance(_transform.position, _target.position);
         }
     }
 }
