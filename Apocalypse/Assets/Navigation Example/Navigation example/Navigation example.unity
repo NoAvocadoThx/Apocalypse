@@ -222,7 +222,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 306957822}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.58, y: 2.39, z: 3.59}
+  m_LocalPosition: {x: -17.95, y: 0, z: -0.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 934048932}
@@ -264,8 +264,8 @@ Camera:
   m_GameObject: {fileID: 339599910}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.735849, g: 0.5970096, b: 0.5970096, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -280,7 +280,7 @@ Camera:
     height: 1
   near clip plane: 0.27
   far clip plane: 1000
-  field of view: 46.3
+  field of view: 26.991467
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -33832,7 +33832,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!195 &1477823843
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -34990,7 +34990,7 @@ Animator:
   m_GameObject: {fileID: 8296172668569343543}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8dfc10bdef637fc498574205ad488ced, type: 3}
-  m_Controller: {fileID: 9100000, guid: 65c37ac24cb051845a018ce5cfdae21d, type: 2}
+  m_Controller: {fileID: 9100000, guid: be0de44aaf0ba1b478173db0dfcfd7f1, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -36299,8 +36299,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5006512735433237540}
   - component: {fileID: 3166231813242947934}
-  - component: {fileID: 8296172668569343544}
   - component: {fileID: 8296172668569343545}
+  - component: {fileID: 8296172668569343544}
   m_Layer: 0
   m_Name: copzombie_l_actisdato
   m_TagString: Untagged
@@ -36315,24 +36315,46 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8296172668569343543}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31f1e36585b9d334db0956e4f27affac, type: 3}
+  m_Script: {fileID: 11500000, guid: b88e74ad490f5f14daa355240567f0ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
---- !u!114 &8296172668569343545
-MonoBehaviour:
+  WaypointNetwork: {fileID: 1296459041}
+  curIndex: 0
+  hasPath: 0
+  pathPending: 0
+  pathStale: 0
+  pathStatus: 2
+  jumpCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  MixedMode: 0
+--- !u!195 &8296172668569343545
+NavMeshAgent:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8296172668569343543}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c37803bd5d2356e4dbf4d1afac9d26d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 5.6
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!4 &8471817553450068022
 Transform:
   m_ObjectHideFlags: 0
