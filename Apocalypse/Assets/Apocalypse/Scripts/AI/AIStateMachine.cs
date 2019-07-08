@@ -282,6 +282,8 @@ public abstract class AIStateMachine : MonoBehaviour
 
 
     /*********************************************************/
+    // Called by our AISensor component when an AI Aggravator
+    //has entered/exited the sensor trigger.
     public virtual void OnTriggerEvent(AITriggerEventType type, Collider other)
     {
         if (_curState)
@@ -289,4 +291,48 @@ public abstract class AIStateMachine : MonoBehaviour
             _curState.OnTriggerEvent(type, other);
         }
     }
+
+    /*********************************************************/
+    // -----------------------------------------------------------
+    // Name	:	OnAnimatorMove
+    // Desc	:	Called by Unity after root motion has been
+    //			evaluated but not applied to the object.
+    //			This allows us to determine via code what to do
+    //			with the root motion information
+    // -----------------------------------------------------------
+    protected virtual void OnAnimatorMove()
+    {
+        if (_curState)
+        {
+            _curState.OnAnimatorUpdated();
+        }
+    }
+
+    /*********************************************************/
+    // ----------------------------------------------------------
+    // Name	: OnAnimatorIK
+    // Desc	: Called by Unity just prior to the IK system being
+    //		  updated giving us a chance to setup up IK Targets
+    //		  and weights.
+    // ----------------------------------------------------------
+    protected virtual void OnAnimatorIK(int layerIndex)
+    {
+        if (_curState)
+        {
+            _curState.OnAnimatorIKUpdated();
+        }
+    }
+
+    /*********************************************************/
+    //Configure the NavMeshAgent to enable/disable auto
+    //updates of position/rotation to our transform
+    public void NavAgentControl(bool positionUpdate,bool rotationUpdate)
+    {
+        if (_navAgent)
+        {
+            _navAgent.updatePosition = positionUpdate;
+            _navAgent.updateRotation = rotationUpdate;
+        }
+    }
+
 }
