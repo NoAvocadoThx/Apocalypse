@@ -8,8 +8,9 @@ public abstract class AIState : MonoBehaviour
     protected AIStateMachine _stateMachine;
 
     //public
+    /*********************************************************/
     //call by parent state machine to assign its reference
-    public void SetStateMachine(AIStateMachine stateMachine) { _stateMachine = stateMachine; }
+    public virtual void SetStateMachine(AIStateMachine stateMachine) { _stateMachine = stateMachine; }
 
     //default handlers
     public virtual void OnEnterState() { }
@@ -28,6 +29,32 @@ public abstract class AIState : MonoBehaviour
         if (_stateMachine.useRootRotation)
             _stateMachine.transform.rotation = _stateMachine.animator.rootRotation;
     }
+
+    /*********************************************************/
+    // Converts the passed sphere collider's pos and radius into world space and take hiearchical scale into account
+    public static void ConvertSphereColliderToWorldSpace(SphereCollider col,out Vector3 pos,out float radius)
+    {
+        //default
+        pos = Vector3.zero;
+        radius = 0.0f;
+
+        //if no valid collider, return
+        if (col == null) return;
+
+        //calculate world space position of sphere center
+        pos = col.transform.position;
+        pos.x += col.center.x * col.transform.lossyScale.x;
+        pos.y += col.center.y * col.transform.lossyScale.y;
+        pos.z += col.center.z * col.transform.lossyScale.z;
+
+        //for radius center
+        radius = Mathf.Max(col.radius * col.transform.lossyScale.x,
+                           col.radius * col.transform.lossyScale.y);
+        radius = Mathf.Max(radius, col.radius * col.transform.lossyScale.z);
+    }
+
+
+
     public virtual void OnAnimatorIKUpdated() { }
     public virtual void OnTriggerEvent(AITriggerEventType eventType, Collider other) { }
     public virtual void OnDesinationReached(bool isReached) { }
