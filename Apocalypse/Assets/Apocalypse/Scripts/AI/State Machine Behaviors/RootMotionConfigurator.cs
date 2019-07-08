@@ -23,7 +23,7 @@ public class RootMotionConfigurator : AIStateMachineLink
     {
         if (_stateMachine)
         {
-            Debug.Log(_stateMachine.GetType().ToString());
+            //Debug.Log(_stateMachine.GetType().ToString());
             _stateMachine.AddRootMotionRequest(_rootPostion, _rootRotation);
         }
     }
