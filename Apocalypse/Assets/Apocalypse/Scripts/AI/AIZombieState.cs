@@ -7,12 +7,14 @@ public abstract class AIZombieState : AIState
     //Private 
     protected int _playerLayerMask = -1;
     protected int _bodyPartLayer = -1;
+    protected int _visualLayerMask = -1;
     protected AIZombieStateMachine _zombieStateMachine = null;
 
     void Awake()
     {
         //get a mask for line of sight testing with the player. +1 will include the default layer
         _playerLayerMask = LayerMask.GetMask("Player","AI Body Part")+1;
+        _visualLayerMask=LayerMask.GetMask("Player", "AI Body Part","Visual Aggravator") + 1;
         //get layer index of the AI body part
         _bodyPartLayer = LayerMask.NameToLayer("AI Body Part");
     }
@@ -91,7 +93,51 @@ public abstract class AIZombieState : AIState
 
                 //get position of the agent sensor
                 Vector3 agentSensorPosition = _zombieStateMachine.sensorPosition;
+                Vector3 soundPos;
+                float soundRadius;
+                AIState.ConvertSphereColliderToWorldSpace(soundTrigger, out soundPos, out soundRadius);
+
+                //how far inside the sound radius are we
+                float distanceToTheat = (soundPos - agentSensorPosition).magnitude;
+                //distance fator, 1 means at sound radius, 0 means at sound center
+                float distanceFactor = (distanceToTheat / soundRadius);
+                //take zombie's hearing ability into consideration
+                distanceFactor += distanceFactor * (1.0f - _zombieStateMachine.hearing);
+                //too far
+                if (distanceFactor > 1.0f)
+                {
+                    return;
+                }
+
+                //if zombie can hear it and it is closer than the sound previously heard
+                if (distanceFactor < _zombieStateMachine.audioThreat.distance)
+                {
+                    //we set this sound to most priority target
+                    _zombieStateMachine.audioThreat.Set(AITargetType.Audio, other, soundPos, distanceToTheat);
+                }
             }
+
+            // 4. If the collider is food
+            //if no player, visual and sound target and zombie's satisfaction <= 90%
+            else if(other.CompareTag("AI Food") && curType != AITargetType.Visual_Player && curType != AITargetType.Visual_Light
+                   && _zombieStateMachine.audioThreat.type==AITargetType.None&& _zombieStateMachine.satisfaction <= 0.9f)
+            {
+                //distance from target
+                float distanceToTheat = Vector3.Distance(other.transform.position, _zombieStateMachine.sensorPosition);
+
+                //if distance is smaller than the target previous stored
+                if (distanceToTheat < _zombieStateMachine.visualThreat.distance)
+                {
+                    //we check that if the target is in FOV and sight of the zombie 
+                    RaycastHit hitInfo;
+                    if(ColliderIsVisible(other,out hitInfo, _visualLayerMask))
+                    {
+                        _zombieStateMachine.visualThreat.Set(AITargetType.Visual_Food, other, other.transform.position, distanceToTheat);
+                    }
+                }
+            }
+
+
 
         }
     }
