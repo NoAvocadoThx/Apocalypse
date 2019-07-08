@@ -55,6 +55,9 @@ public abstract class AIStateMachine : MonoBehaviour
     protected Dictionary<AIStateType, AIState> _states = new Dictionary<AIStateType, AIState>();
     protected AITarget _target = new AITarget();
     protected AIState _curState = null;
+    //no root motion by default
+    protected int _rootPositionRefCount = 0;
+    protected int _rootRotationRedCount = 0;
 
     //[SerializeField] so we can see from inspector
     [SerializeField] protected AIStateType _curStateType = AIStateType.Idle;
@@ -69,7 +72,8 @@ public abstract class AIStateMachine : MonoBehaviour
     protected Collider _collider = null;
     protected Transform _transform = null;
 
-    //public properties
+    /*********************************************************/
+    // Public properties
     public Animator animator { get { return _animator; } }
     public NavMeshAgent navAgent { get { return _navAgent; } }
     public Vector3 sensorPosition
@@ -98,7 +102,12 @@ public abstract class AIStateMachine : MonoBehaviour
         }
     }
 
+    /*********************************************************/
+    public bool useRootPosition { get { return _rootPositionRefCount > 0; } }
+    public bool useRootRotation { get { return _rootRotationRedCount > 0; } }
 
+
+    
 
     /*********************************************************/
     /// <summary>
@@ -157,6 +166,19 @@ public abstract class AIStateMachine : MonoBehaviour
         {
             _curState = null;
         }
+
+
+        // Fetch all AIStateMachineLink derived behaviours from the animator
+        // and set their State Machine references to this state machine
+        if (_animator)
+        {
+            AIStateMachineLink[] _scripts = _animator.GetBehaviours<AIStateMachineLink>();
+            foreach(AIStateMachineLink script in _scripts)
+            {
+                script.stateMachine = this;
+            }
+        }
+
     }
 
     /*********************************************************/
@@ -333,6 +355,15 @@ public abstract class AIStateMachine : MonoBehaviour
             _navAgent.updatePosition = positionUpdate;
             _navAgent.updateRotation = rotationUpdate;
         }
+    }
+
+    /*********************************************************/
+    //Called by the State Machine Behaviours to
+    //Enable/Disable root motion
+    public void AddRootMotionRequest(int rootPosition,int rootRotation)
+    {
+        _rootPositionRefCount += rootPosition;
+        _rootRotationRedCount += rootRotation;
     }
 
 }

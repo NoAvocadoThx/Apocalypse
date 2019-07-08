@@ -409,6 +409,7 @@ GameObject:
   m_Component:
   - component: {fileID: 715985518}
   - component: {fileID: 715985519}
+  - component: {fileID: 715985520}
   m_Layer: 10
   m_Name: Sensor
   m_TagString: Untagged
@@ -443,6 +444,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 19.03
   m_Center: {x: 0, y: 1.85, z: 0}
+--- !u!114 &715985520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 715985517}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49a9f10b9e52e2744bd54a41393aa1a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &934048931
 GameObject:
   m_ObjectHideFlags: 0
@@ -36541,7 +36554,7 @@ MonoBehaviour:
   _curStateType: 1
   _targetTrigger: {fileID: 1841000066}
   _sensorTrigger: {fileID: 715985519}
-  _stoppingDistance: 1
+  _stoppingDistance: 1.07
 --- !u!4 &8471817553450068022
 Transform:
   m_ObjectHideFlags: 0
