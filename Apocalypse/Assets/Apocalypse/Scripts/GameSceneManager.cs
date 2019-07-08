@@ -35,7 +35,7 @@ public class GameSceneManager : MonoBehaviour
 
     /*********************************************************/
     //returns an AIStateMachine reference searched on by the ID of an object
-    public AIStateMachine GetAIStateMachines(int key)
+    public AIStateMachine GetAIStateMachine(int key)
     {
         AIStateMachine machine = null;
         if(_stateMachines.TryGetValue(key,out machine))
