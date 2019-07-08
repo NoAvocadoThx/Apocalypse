@@ -4,15 +4,43 @@ using UnityEngine;
 
 public class GameSceneManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    //statics
+    private static GameSceneManager _instance = null;
+    public static GameSceneManager instance
     {
-        
+        get
+        {
+            if (_instance == null)
+                //find the very first GameSceneManager type object in the scene. In this project GameSceneManager object
+                _instance = (GameSceneManager)FindObjectOfType(typeof(GameSceneManager));
+            return _instance;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    //private
+    private Dictionary<int, AIStateMachine> _stateMachines = new Dictionary<int, AIStateMachine>();
+
+    //public
+
+    //Stores the passed state machine in the dictionary with the suppiled key
+    public void RegisterAIStateMachine(int key, AIStateMachine stateMachine)
     {
-        
+        if (!_stateMachines.ContainsKey(key))
+        {
+            _stateMachines[key] = stateMachine;
+        }
     }
+
+    //returns an AIStateMachine reference searched on by the ID of an object
+    public AIStateMachine GetAIStateMachines(int key)
+    {
+        AIStateMachine machine = null;
+        if(_stateMachines.TryGetValue(key,out machine))
+        {
+            return machine;
+        }
+        return null;
+    }
+
 }

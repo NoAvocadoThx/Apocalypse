@@ -53,6 +53,7 @@ public abstract class AIStateMachine : MonoBehaviour
     protected AITarget _target = new AITarget();
     protected AIState _curState = null;
 
+    //[SerializeField] so we can see from inspector
     [SerializeField] protected AIStateType _curStateType = AIStateType.Idle;
     [SerializeField] protected SphereCollider _targetTrigger = null;
     [SerializeField] protected SphereCollider _sensorTrigger = null;
