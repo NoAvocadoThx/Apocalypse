@@ -72,6 +72,32 @@ public abstract class AIStateMachine : MonoBehaviour
     //public properties
     public Animator animator { get { return _animator; } }
     public NavMeshAgent navAgent { get { return _navAgent; } }
+    public Vector3 sensorPosition
+    {
+        get
+        {
+            //get correctly scaled sensor center of AI Entity
+            if (_sensorTrigger == null) return Vector3.zero;
+            Vector3 point = _sensorTrigger.transform.position;
+            point.x += _sensorTrigger.center.x * _sensorTrigger.transform.lossyScale.x;
+            point.y += _sensorTrigger.center.y * _sensorTrigger.transform.lossyScale.y;
+            point.z += _sensorTrigger.center.z * _sensorTrigger.transform.lossyScale.z;
+            return point;
+        }
+    }
+
+    public float sensorRadius
+    {
+        get
+        {
+            //get correctly scaled sensor radius of AI Entity
+            if (_sensorTrigger == null) return 0.0f;
+            float radius = Mathf.Max(_sensorTrigger.radius * _sensorTrigger.transform.lossyScale.x,
+                                     _sensorTrigger.radius * _sensorTrigger.transform.lossyScale.y);
+            return Mathf.Max(radius, _sensorTrigger.radius * _sensorTrigger.transform.lossyScale.z);
+        }
+    }
+
 
 
     /*********************************************************/
