@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -21,6 +22,7 @@ public struct AITarget
     public float distance { get{ return _distance;  }  set { _distance = value; } }
     public float time { get { return _time; } }
 
+    /*********************************************************/
     public void Set(AITargetType t,Collider c,Vector3 p, float d)
     {
         _type = t;
@@ -30,6 +32,7 @@ public struct AITarget
         _time = Time.time;
     }
 
+    /*********************************************************/
     public void Clear()
     {
         _type = AITargetType.None;
@@ -70,17 +73,42 @@ public abstract class AIStateMachine : MonoBehaviour
     public Animator animator { get { return _animator; } }
     public NavMeshAgent navAgent { get { return _navAgent; } }
 
-    //cache reference to gameObject
+
+    /*********************************************************/
+    /// <summary>
+    /// cache reference to gameObject
+    /// </summary>
     protected virtual void Awake()
     {
         _transform = transform;
         _animator = GetComponent<Animator>();
         _navAgent = GetComponent<NavMeshAgent>();
         _collider = GetComponent<Collider>();
+
+        if (GameSceneManager.instance != null)
+        {
+            //register State Mahcines with Scene database
+            if (_collider) GameSceneManager.instance.RegisterAIStateMachine(_collider.GetInstanceID(), this);
+            if (_sensorTrigger) GameSceneManager.instance.RegisterAIStateMachine(_sensorTrigger.GetInstanceID(), this);
+
+        }
     }
 
+    /*********************************************************/
+    /// <summary>
+    /// 
+    /// </summary>
     protected virtual void Start()
     {
+
+        if (_sensorTrigger)
+        {
+            AISensor script = _sensorTrigger.GetComponent<AISensor>();
+            if (script)
+            {
+                script.parentStateMachine = this;
+            }
+        }
         //fetch all states on this game object
         AIState[] states = GetComponents<AIState>();
         //loop through all states and add them to the state dictionary
@@ -105,7 +133,8 @@ public abstract class AIStateMachine : MonoBehaviour
         }
     }
 
-  // Set Target parameters
+    /*********************************************************/
+    // Set Target parameters
 
     public void SetTarget(AITargetType t,Collider c,Vector3 p, float d)
     {
@@ -118,7 +147,7 @@ public abstract class AIStateMachine : MonoBehaviour
             _targetTrigger.enabled = true;
         }
     }
-
+    /*********************************************************/
     // Set Target parameters
     public void SetTarget(AITargetType t, Collider c, Vector3 p, float d,float s)
     {
@@ -130,7 +159,7 @@ public abstract class AIStateMachine : MonoBehaviour
             _targetTrigger.enabled = true;
         }
     }
-
+    /*********************************************************/
     // Set Target parameters
     public void SetTarget(AITarget t)
     {
@@ -142,7 +171,7 @@ public abstract class AIStateMachine : MonoBehaviour
             _targetTrigger.enabled = true;
         }
     }
-
+    /*********************************************************/
     //Clear target
     public void ClearTarget()
     {
@@ -153,6 +182,7 @@ public abstract class AIStateMachine : MonoBehaviour
         }
     }
 
+    /*********************************************************/
     //clear visual and audio target each frame so we re-calculate distance to the curTarget
     protected virtual void FixedUpdate()
     {
@@ -165,7 +195,7 @@ public abstract class AIStateMachine : MonoBehaviour
     }
 
 
-
+    /*********************************************************/
     //Update each frame. Gives current State achance to update itself and perform transitions
     protected virtual void Update()
     {
@@ -190,6 +220,47 @@ public abstract class AIStateMachine : MonoBehaviour
                 _curState = newState;
             }
             _curStateType = newStateType;
+        }
+    }
+
+    /*********************************************************/
+    //Called by Physic system when the AI's main collider enters its trigger. This allows
+    //the child state to know when it has entered the sphere of influence of a waypoint or last player
+    //sighted position
+    protected virtual void OnTriggerEnter(Collider other)
+    {
+        if (_targetTrigger == null || other != _targetTrigger) return;
+
+        //notify child state
+        if (_curState)
+        {
+            _curState.OnDesinationReached(true);
+        }
+    }
+
+
+    /*********************************************************/
+    //Informs the child state that the AI entity is no longer at
+    //its desination (Typically true when a new target has been)
+    //set by the child
+    protected virtual void OnTriggerExit(Collider other)
+    {
+        if (_targetTrigger == null || other != _targetTrigger) return;
+
+        //notify child state
+        if (_curState)
+        {
+            _curState.OnDesinationReached(false);
+        }
+    }
+
+
+    /*********************************************************/
+    public virtual void OnTriggerEvent(AITriggerEventType type, Collider other)
+    {
+        if (_curState)
+        {
+            _curState.OnTriggerEvent(type, other);
         }
     }
 }

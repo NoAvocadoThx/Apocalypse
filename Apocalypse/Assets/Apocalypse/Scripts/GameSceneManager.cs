@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameSceneManager : MonoBehaviour
 {
 
+
     //statics
     private static GameSceneManager _instance = null;
     public static GameSceneManager instance
@@ -22,7 +23,7 @@ public class GameSceneManager : MonoBehaviour
     private Dictionary<int, AIStateMachine> _stateMachines = new Dictionary<int, AIStateMachine>();
 
     //public
-
+    /*********************************************************/
     //Stores the passed state machine in the dictionary with the suppiled key
     public void RegisterAIStateMachine(int key, AIStateMachine stateMachine)
     {
@@ -32,6 +33,7 @@ public class GameSceneManager : MonoBehaviour
         }
     }
 
+    /*********************************************************/
     //returns an AIStateMachine reference searched on by the ID of an object
     public AIStateMachine GetAIStateMachines(int key)
     {
