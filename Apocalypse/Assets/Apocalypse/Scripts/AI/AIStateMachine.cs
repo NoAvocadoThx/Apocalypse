@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public enum AIStateType { None, Idle, Alerted, Patrol, Attack, Feeding, Pursuit, Dead}
 public enum AITargetType { None, Waypoint, Visual_Player,Visual_Light, Visual_Food,Audio}
+public enum AITriggerEventType { Enter,Exit,Stay}
 
 public struct AITarget
 {
@@ -48,8 +49,9 @@ public abstract class AIStateMachine : MonoBehaviour
     public AITarget audioThreat = new AITarget();
 
     //protected
-    protected Dictionary<AIStateType, AIState> _state = new Dictionary<AIStateType, AIState>();
+    protected Dictionary<AIStateType, AIState> _states = new Dictionary<AIStateType, AIState>();
     protected AITarget _target = new AITarget();
+    protected AIState _curState = null;
 
     [SerializeField] protected AIStateType _curStateType = AIStateType.Idle;
     [SerializeField] protected SphereCollider _targetTrigger = null;
@@ -67,7 +69,7 @@ public abstract class AIStateMachine : MonoBehaviour
     public Animator animator { get { return _animator; } }
     public NavMeshAgent navAgent { get { return _navAgent; } }
 
-
+    //cache reference to gameObject
     protected virtual void Awake()
     {
         _transform = transform;
@@ -83,12 +85,26 @@ public abstract class AIStateMachine : MonoBehaviour
         //loop through all states and add them to the state dictionary
         foreach (AIState state in states)
         {
-            if (state != null && !_state.ContainsKey(state.GetStateType()))
+            if (state != null && !_states.ContainsKey(state.GetStateType()))
             {
-                _state[state.GetStateType()] = state;
+                _states[state.GetStateType()] = state;
+                state.SetStateMachine(this);
             }
         }
+
+        if (_states.ContainsKey(_curStateType))
+        {
+            _curState = _states[_curStateType];
+            //intialize curState after fetch
+            _curState.OnEnterState();
+        }
+        else
+        {
+            _curState = null;
+        }
     }
+
+  // Set Target parameters
 
     public void SetTarget(AITargetType t,Collider c,Vector3 p, float d)
     {
@@ -102,6 +118,7 @@ public abstract class AIStateMachine : MonoBehaviour
         }
     }
 
+    // Set Target parameters
     public void SetTarget(AITargetType t, Collider c, Vector3 p, float d,float s)
     {
         _target.Set(t, c, p, d);
@@ -113,6 +130,7 @@ public abstract class AIStateMachine : MonoBehaviour
         }
     }
 
+    // Set Target parameters
     public void SetTarget(AITarget t)
     {
         _target = t;
@@ -124,6 +142,7 @@ public abstract class AIStateMachine : MonoBehaviour
         }
     }
 
+    //Clear target
     public void ClearTarget()
     {
         _target.Clear();
@@ -141,6 +160,35 @@ public abstract class AIStateMachine : MonoBehaviour
         if (_target.type != AITargetType.None)
         {
             _target.distance = Vector3.Distance(_transform.position, _target.position);
+        }
+    }
+
+
+
+    //Update each frame. Gives current State achance to update itself and perform transitions
+    protected virtual void Update()
+    {
+        if (_curState == null) return;
+        AIStateType newStateType= _curState.OnUpdate();
+        if (newStateType != _curStateType)
+        {
+            AIState newState = null;
+            //if newStateType exits, populate newState with actual AI state reference
+            if(_states.TryGetValue(newStateType,out newState))
+            {
+                _curState.OnExitState();
+                newState.OnEnterState();
+                _curState = newState;
+            }
+            //if we do not find the state, we return to AIStateType Idle state by default
+            else
+            if (_states.TryGetValue(AIStateType.Idle, out newState))
+            {
+                _curState.OnExitState();
+                newState.OnEnterState();
+                _curState = newState;
+            }
+            _curStateType = newStateType;
         }
     }
 }
