@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+//State Machine used by zombie characters
 public class AIZombieStateMachine : AIStateMachine
 {
     // Inspector parameters aka zombie attributes by defult
@@ -18,6 +20,14 @@ public class AIZombieStateMachine : AIStateMachine
     private bool _feeding = false;
     private bool _crawling = false;
     private int _attackType = 0;
+
+
+    // Hashes
+    private int _speedHash = Animator.StringToHash("Speed");
+    private int _seekingHash = Animator.StringToHash("Seeking");
+    private int _feedingHash = Animator.StringToHash("Feeding");
+    private int _attackHash = Animator.StringToHash("Attack");
+
 
     //public Properties
     //getters and setters of states
@@ -44,8 +54,9 @@ public class AIZombieStateMachine : AIStateMachine
     {
         base.Update();
 
-        if (_animator != null)
+        if (_animator)
         {
+            //set parameters of animators
             _animator.SetFloat(_speedHash, _navAgent.speed);
             _animator.SetBool(_feedingHash, _feeding);
             _animator.SetInteger(_seekingHash, _seeking);
