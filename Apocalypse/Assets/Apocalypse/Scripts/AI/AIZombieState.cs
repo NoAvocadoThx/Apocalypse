@@ -21,6 +21,7 @@ public abstract class AIZombieState : AIState
 
     /*********************************************************/
     //Check for type compliance and store reference as derived type
+    //cast _stateMachine to _AIZombieStateMachine
     public override void SetStateMachine(AIStateMachine stateMachine) {
         if (stateMachine.GetType() == typeof(AIZombieStateMachine))
         {
@@ -132,6 +133,7 @@ public abstract class AIZombieState : AIState
                     RaycastHit hitInfo;
                     if(ColliderIsVisible(other,out hitInfo, _visualLayerMask))
                     {
+                        //set new target
                         _zombieStateMachine.visualThreat.Set(AITargetType.Visual_Food, other, other.transform.position, distanceToTheat);
                     }
                 }
