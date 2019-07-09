@@ -91,6 +91,7 @@ public class AIZombieState_Patrol1 : AIZombieState
         //if audio threat, then got to alerted state
         if (_zombieStateMachine.audioThreat.type == AITargetType.Audio)
         {
+            Debug.Log("I hear this!");
             _zombieStateMachine.SetTarget(_zombieStateMachine.audioThreat);
             return AIStateType.Alerted;
         }
@@ -142,6 +143,7 @@ public class AIZombieState_Patrol1 : AIZombieState
     //target and generates a nav agent path for it
     private void genNextWaypoint()
     {
+        Debug.Log("nextWaypoint");
         // Increase the current waypoint with wrap-around to zero (or choose a random waypoint)
         if (_randomPatrol && _waypointNetwork.waypoints.Count > 1)
         {
@@ -169,6 +171,7 @@ public class AIZombieState_Patrol1 : AIZombieState
 
             // Set new Path
             _zombieStateMachine.navAgent.SetDestination(newWaypoint.position);
+            Debug.Log(newWaypoint.position.ToString());
         }
     }
 
@@ -192,10 +195,10 @@ public class AIZombieState_Patrol1 : AIZombieState
 
     /*********************************************************/
     //
-    public override void OnAnimatorIKUpdated()
+   /* public override void OnAnimatorIKUpdated()
     {
         if (!_zombieStateMachine) return;
         _zombieStateMachine.animator.SetLookAtPosition(_zombieStateMachine.targetPosition+Vector3.up);
         _zombieStateMachine.animator.SetLookAtWeight(0.55f);
-    }
+    }*/
 }

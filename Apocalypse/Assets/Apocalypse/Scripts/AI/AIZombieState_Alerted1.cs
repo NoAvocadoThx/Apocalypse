@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AIZombieState_Alerted1 : AIZombieState
 {
-    [SerializeField][Range(0.0f,60.0f)] float _maxDuration =10.0f;
+    [SerializeField][Range(1,60)] float _maxDuration =10.0f;
     [SerializeField] float _waypointAngleThreshold = 90.0f;
     [SerializeField] float _threatAngleThreshhold = 10.0f;
 
@@ -42,6 +42,7 @@ public class AIZombieState_Alerted1 : AIZombieState
     /*********************************************************/
     public override AIStateType OnUpdate()
     {
+        //Debug.Log(_zombieStateMachine.seeking);
         //reduce timer
         _timer -= Time.deltaTime;
         //transition into a patrol state
@@ -101,7 +102,7 @@ public class AIZombieState_Alerted1 : AIZombieState
             //angle between zombie forward and from zombie to target
             angle = AIState.FindSignedAngle(_zombieStateMachine.transform.forward,
                                         _zombieStateMachine.navAgent.steeringTarget - _zombieStateMachine.transform.position);
-            //
+            
             if (Mathf.Abs(angle) < _waypointAngleThreshold) return AIStateType.Patrol;
             _zombieStateMachine.seeking = (int)Mathf.Sign(angle);
         }
