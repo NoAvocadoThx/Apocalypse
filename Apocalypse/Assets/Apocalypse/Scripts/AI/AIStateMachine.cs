@@ -105,7 +105,7 @@ public abstract class AIStateMachine : MonoBehaviour
     /*********************************************************/
     public bool useRootPosition { get { return _rootPositionRefCount > 0; } }
     public bool useRootRotation { get { return _rootRotationRedCount > 0; } }
-
+    public AITargetType targetType { get { return _target.type; } }
 
     
 

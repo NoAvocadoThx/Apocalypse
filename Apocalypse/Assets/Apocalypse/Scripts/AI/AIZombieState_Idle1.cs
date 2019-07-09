@@ -11,6 +11,7 @@ public class AIZombieState_Idle1 : AIZombieState
     float _idleTime = 0.0f;
     float _timer = 0.0f;
 
+    /*********************************************************/
     public override void OnEnterState()
     {
         Debug.Log("Enter Idle state");
@@ -29,11 +30,16 @@ public class AIZombieState_Idle1 : AIZombieState
         _zombieStateMachine.ClearTarget();
     }
 
+
+    /*********************************************************/
     public override AIStateType GetStateType()
     {
         
         return AIStateType.Idle;
     }
+
+
+    /*********************************************************/
     public override AIStateType OnUpdate()
     {
         if (_zombieStateMachine == null) return AIStateType.Idle;
