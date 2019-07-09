@@ -14,6 +14,8 @@ public class AIZombieStateMachine : AIStateMachine
     [SerializeField] [Range(0, 100)] int _health = 100;
     [SerializeField] [Range(0.0f, 1.0f)] float _intelligence = 0.5f;
     [SerializeField] [Range(0.0f, 1.0f)] float _satisfaction = 1.0f;
+    [SerializeField] float _replenishRate = 0.5f;
+    [SerializeField] float _depletionRate = 0.1f;
 
     // Private
     private int _seeking = 0;
@@ -43,6 +45,7 @@ public class AIZombieStateMachine : AIStateMachine
     public int attackType { get { return _attackType; } set { _attackType = value; } }
     public bool feeding { get { return _feeding; } set { _feeding = value; } }
     public int seeking { get { return _seeking; } set { _seeking = value; } }
+    public float replenishRate { get { return _replenishRate; } }
     public float speed
     {
         get { return _speed; }
