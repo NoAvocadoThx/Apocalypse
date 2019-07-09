@@ -101,9 +101,8 @@ public class AIZombieState_Pursuit1 : AIZombieState
             Quaternion newRot = Quaternion.LookRotation(targetPos - _zombieStateMachine.transform.position);
             _zombieStateMachine.transform.rotation = newRot;
         }
-        else
+        else if (!_stateMachine.useRootRotation && !_zombieStateMachine.isTargetReached)
         // SLowly update our rotation to match the nav agents desired rotation BUT only if we are not persuing the player and are really close to him
-        if (!_stateMachine.useRootRotation && !_zombieStateMachine.isTargetReached)
         {
             // Generate a new Quaternion representing the rotation we should have
             Quaternion newRot = Quaternion.LookRotation(_zombieStateMachine.navAgent.desiredVelocity);
@@ -111,8 +110,8 @@ public class AIZombieState_Pursuit1 : AIZombieState
             // Smoothly rotate to that new rotation over time
             _zombieStateMachine.transform.rotation = Quaternion.Slerp(_zombieStateMachine.transform.rotation, newRot, Time.deltaTime * _slerpSpeed);
         }
-        else
-        if (_zombieStateMachine.isTargetReached)
+
+        else if(_zombieStateMachine.isTargetReached)
         {
             return AIStateType.Alerted;
         }
@@ -187,17 +186,16 @@ public class AIZombieState_Pursuit1 : AIZombieState
                 }
             }
         }
-        else
-        if (_zombieStateMachine.audioThreat.type == AITargetType.Audio)
+        
+        else if (_zombieStateMachine.audioThreat.type == AITargetType.Audio)
         {
-
+            Debug.Log(_zombieStateMachine.isTargetReached);
             if (_zombieStateMachine.targetType == AITargetType.Visual_Food)
             {
                 _zombieStateMachine.SetTarget(_zombieStateMachine.audioThreat);
                 return AIStateType.Alerted;
             }
-            else
-            if (_zombieStateMachine.targetType == AITargetType.Audio)
+            else if (_zombieStateMachine.targetType == AITargetType.Audio)
             {
                 Debug.Log("enter Alerted??YES!");
                 // Get unique ID of the collider of our target
@@ -231,7 +229,7 @@ public class AIZombieState_Pursuit1 : AIZombieState
                 }
             }
         }
-
+        
         // Default
         return AIStateType.Pursuit;
     }

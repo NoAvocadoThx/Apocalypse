@@ -64,7 +64,9 @@ public abstract class AIStateMachine : MonoBehaviour
     [SerializeField] protected AIStateType _curStateType = AIStateType.Idle;
     [SerializeField] protected SphereCollider _targetTrigger = null;
     [SerializeField] protected SphereCollider _sensorTrigger = null;
-
+    [SerializeField] protected AIWaypointNetwork _waypointNetwork = null;
+    [SerializeField] protected bool _randomPatrol = false;
+    [SerializeField] protected int _curWaypoint = -1;
     [SerializeField] [Range(0, 15)] protected float _stoppingDistance = 1.0f; 
 
     //Component cache
@@ -196,6 +198,30 @@ public abstract class AIStateMachine : MonoBehaviour
     }
 
     /*********************************************************/
+    //select a new waypoint. Either randomly selects a new
+    //waypoint from the waypoint network or increments the current
+    //waypoint index (with wrap-around) to visit the waypoints in
+    //the network in sequence. Sets the new waypoint as the the
+    //target and generates a nav agent path for it
+    private void genNextWaypoint()
+    {
+        // Increase the current waypoint with wrap-around to zero (or choose a random waypoint)
+        if (_randomPatrol && _waypointNetwork.waypoints.Count > 1)
+        {
+            // Keep generating random waypoint until we find one that isn't the current one
+            // NOTE: Very important that waypoint networks do not only have one waypoint :)
+            int oldWaypoint = _curWaypoint;
+            while (_curWaypoint == oldWaypoint)
+            {
+                _curWaypoint = Random.Range(0, _waypointNetwork.waypoints.Count);
+            }
+        }
+        else
+            _curWaypoint = _curWaypoint == _waypointNetwork.waypoints.Count - 1 ? 0 : _curWaypoint + 1;
+    }
+
+
+    /*********************************************************/
     // Set Target parameters
 
     public void SetTarget(AITargetType t,Collider c,Vector3 p, float d)
@@ -293,7 +319,7 @@ public abstract class AIStateMachine : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (_targetTrigger == null || other != _targetTrigger) return;
-
+        Debug.Log("OntriggerEnter");
         _isTargetReached = true;
         //notify child state
         if (_curState)
@@ -306,7 +332,7 @@ public abstract class AIStateMachine : MonoBehaviour
     protected virtual void OnTriggerStay(Collider other)
     {
         if (_targetTrigger == null || other != _targetTrigger) return;
-
+        Debug.Log("OntriggerStay");
         _isTargetReached = true;
         
     }
@@ -320,7 +346,7 @@ public abstract class AIStateMachine : MonoBehaviour
     protected void OnTriggerExit(Collider other)
     {
         if (_targetTrigger == null || other != _targetTrigger) return;
-
+        Debug.Log("OntriggerExit");
         _isTargetReached = false;
         //notify child state
         if (_curState)
@@ -393,4 +419,38 @@ public abstract class AIStateMachine : MonoBehaviour
         _rootRotationRedCount += rootRotation;
     }
 
+
+    /*********************************************************/
+    //Fetched the world space position of the state machine's currently
+    //set waypoint with optional increment
+    public Vector3 GetWaypointPosition(bool increment)
+    {
+        if (_curWaypoint == -1)
+        {
+            if (_randomPatrol)
+                _curWaypoint = Random.Range(0, _waypointNetwork.waypoints.Count);
+            else
+                _curWaypoint = 0;
+        }
+        else if (increment)
+            genNextWaypoint();
+
+        // Fetch the new waypoint from the waypoint list
+        if (_waypointNetwork.waypoints[_curWaypoint] != null)
+        {
+            Transform newWaypoint = _waypointNetwork.waypoints[_curWaypoint];
+
+            // This is our new target position
+            SetTarget(AITargetType.Waypoint,
+                        null,
+                        newWaypoint.position,
+                        Vector3.Distance(newWaypoint.position, transform.position));
+
+            return newWaypoint.position;
+        }
+
+        return Vector3.zero;
+    }
+
+    
 }

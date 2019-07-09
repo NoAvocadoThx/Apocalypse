@@ -50,8 +50,12 @@ public class AIZombieState_Alerted1 : AIZombieState
         _timer -= Time.deltaTime;
         _directionChangeTimer += Time.deltaTime;
         //transition into a patrol state
-        if (_timer <= 0.0f) return AIStateType.Patrol;
-
+        if (_timer <= 0.0f)
+        {
+            _zombieStateMachine.navAgent.SetDestination(_zombieStateMachine.GetWaypointPosition(false));
+            _zombieStateMachine.navAgent.Resume();
+            _timer = _maxDuration;
+        }
         //if it sees player, set state to pursuit
         if (_zombieStateMachine.visualThreat.type == AITargetType.Visual_Player)
         {
@@ -88,20 +92,25 @@ public class AIZombieState_Alerted1 : AIZombieState
             {
                 return AIStateType.Pursuit;
             }
-            //if random number is smaller than the intelligence property
-            //the zombie may turn to a random direction instead of turning to the target direction
-            if (Random.value < _zombieStateMachine.intelligence)
+
+            if (_directionChangeTimer > _directionChangeTime)
             {
-                _zombieStateMachine.seeking = (int)Mathf.Sign(angle);
-            }
-            else
-            {
-                _zombieStateMachine.seeking= (int)Mathf.Sign(Random.Range(-1.0f,1.0f));
+                //if random number is smaller than the intelligence property
+                //the zombie may turn to a random direction instead of turning to the target direction
+                if (Random.value < _zombieStateMachine.intelligence)
+                {
+                    _zombieStateMachine.seeking = (int)Mathf.Sign(angle);
+                }
+                else
+                {
+                    _zombieStateMachine.seeking = (int)Mathf.Sign(Random.Range(-1.0f, 1.0f));
+                }
+                _directionChangeTimer = 0.0f;
             }
            
         }
         //if the target is a waypoint
-        else if (_zombieStateMachine.targetType == AITargetType.Waypoint)
+        else if (_zombieStateMachine.targetType == AITargetType.Waypoint&& !_zombieStateMachine.navAgent.pathPending)
         {
             //angle between zombie forward and from zombie to target
             angle = AIState.FindSignedAngle(_zombieStateMachine.transform.forward,

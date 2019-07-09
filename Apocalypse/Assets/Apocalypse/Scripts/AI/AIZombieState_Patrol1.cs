@@ -6,9 +6,7 @@ using UnityEngine.AI;
 public class AIZombieState_Patrol1 : AIZombieState
 {
     //Inspector
-    [SerializeField] AIWaypointNetwork _waypointNetwork=null;
-    [SerializeField] bool _randomPatrol = false;
-    [SerializeField] int _curWaypoint = 0;
+    
     [SerializeField][Range(0.0f,3.0f)] float _speed = 1.0f;
     [SerializeField] float _turnOnSpotThreshold = 80.0f;
     [SerializeField] float _slerpSpeed=5.0f;
@@ -28,43 +26,8 @@ public class AIZombieState_Patrol1 : AIZombieState
         _zombieStateMachine.feeding = false;
         _zombieStateMachine.attackType = 0;
 
-        // If the current target is not a waypoint then we need to select
-        // a waypoint from te waypoint network and make this the new target
-        // and plot a path to it
-        if (_zombieStateMachine.targetType != AITargetType.Waypoint)
-        {
-            //clear previous target
-            _zombieStateMachine.ClearTarget();
-
-            //if we have valid waypointNetwork
-            if (_waypointNetwork && _waypointNetwork.waypoints.Count > 0)
-            {
-                //set cur waypoint to random waypoint if randomPatrol
-                if (_randomPatrol)
-                {
-                    _curWaypoint = Random.Range(0, _waypointNetwork.waypoints.Count);
-                }
-
-                //if it is a valid index waypoint
-                if (_curWaypoint < _waypointNetwork.waypoints.Count)
-                {
-                    Transform waypoint = _waypointNetwork.waypoints[_curWaypoint];
-                    if (waypoint)
-                    {
-                        
-                        _zombieStateMachine.SetTarget(
-                            AITargetType.Waypoint, 
-                            null, 
-                            waypoint.position, 
-                            Vector3.Distance(_zombieStateMachine.transform.position, waypoint.position));
-
-                        //let navAgent make a path for the zombie
-                        _zombieStateMachine.navAgent.SetDestination(waypoint.position);
-                       
-                    }
-                }
-            }
-        }
+        // set Destination
+        _zombieStateMachine.navAgent.SetDestination(_zombieStateMachine.GetWaypointPosition(false));
         //resume patrol state if pause?
         _zombieStateMachine.navAgent.Resume();
     }
@@ -127,61 +90,23 @@ public class AIZombieState_Patrol1 : AIZombieState
         if (_zombieStateMachine.navAgent.isPathStale || !_zombieStateMachine.navAgent.hasPath
             ||_zombieStateMachine.navAgent.pathStatus!=NavMeshPathStatus.PathComplete)
         {
-            
-            genNextWaypoint();
+
+            _zombieStateMachine.GetWaypointPosition(true);
         }
 
         return AIStateType.Patrol;
     }
 
 
-    /*********************************************************/
-    //select a new waypoint. Either randomly selects a new
-    //waypoint from the waypoint network or increments the current
-    //waypoint index (with wrap-around) to visit the waypoints in
-    //the network in sequence. Sets the new waypoint as the the
-    //target and generates a nav agent path for it
-    private void genNextWaypoint()
-    {
-        Debug.Log("nextWaypoint");
-        // Increase the current waypoint with wrap-around to zero (or choose a random waypoint)
-        if (_randomPatrol && _waypointNetwork.waypoints.Count > 1)
-        {
-            // Keep generating random waypoint until we find one that isn't the current one
-            // NOTE: Very important that waypoint networks do not only have one waypoint :)
-            int oldWaypoint = _curWaypoint;
-            while (_curWaypoint == oldWaypoint)
-            {
-                _curWaypoint = Random.Range(0, _waypointNetwork.waypoints.Count);
-            }
-        }
-        else
-            _curWaypoint = _curWaypoint == _waypointNetwork.waypoints.Count - 1 ? 0 : _curWaypoint + 1;
-
-        // Fetch the new waypoint from the waypoint list
-        if (_waypointNetwork.waypoints[_curWaypoint] != null)
-        {
-            Transform newWaypoint = _waypointNetwork.waypoints[_curWaypoint];
-
-            // This is our new target position
-            _zombieStateMachine.SetTarget(AITargetType.Waypoint,
-                                            null,
-                                            newWaypoint.position,
-                                            Vector3.Distance(newWaypoint.position, _zombieStateMachine.transform.position));
-
-            // Set new Path
-            _zombieStateMachine.navAgent.SetDestination(newWaypoint.position);
-            Debug.Log(newWaypoint.position.ToString());
-        }
-    }
+    
 
     /*********************************************************/
     //when the zombie has reached its target (entered its target trigger
     public override void OnDesinationReached(bool isReached)
     {
         if (_zombieStateMachine == null||!isReached) return;
-        if (_zombieStateMachine.targetType == AITargetType.Waypoint) genNextWaypoint();
-        
+        if (_zombieStateMachine.targetType == AITargetType.Waypoint) _zombieStateMachine.GetWaypointPosition(true);
+
     }
 
     /*********************************************************/
