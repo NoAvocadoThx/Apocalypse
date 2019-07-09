@@ -58,6 +58,7 @@ public abstract class AIStateMachine : MonoBehaviour
     //no root motion by default
     protected int _rootPositionRefCount = 0;
     protected int _rootRotationRedCount = 0;
+    protected bool _isTargetReached = false;
 
     //[SerializeField] so we can see from inspector
     [SerializeField] protected AIStateType _curStateType = AIStateType.Idle;
@@ -75,6 +76,7 @@ public abstract class AIStateMachine : MonoBehaviour
     /*********************************************************/
     // Public properties
     public bool inMeleeRange { get; set; }
+    public bool isTargetReached { get { return _isTargetReached; } }
     public Animator animator { get { return _animator; } }
     public NavMeshAgent navAgent { get { return _navAgent; } }
     public Vector3 sensorPosition
@@ -108,6 +110,16 @@ public abstract class AIStateMachine : MonoBehaviour
     public bool useRootRotation { get { return _rootRotationRedCount > 0; } }
     public AITargetType targetType { get { return _target.type; } }
     public Vector3 targetPosition { get { return _target.position; } }
+    public int targetColliderID
+    {
+        get
+        {
+            if (_target.collider)
+                return _target.collider.GetInstanceID();
+            else
+                return -1; 
+        }
+    }
 
     
 
@@ -242,6 +254,7 @@ public abstract class AIStateMachine : MonoBehaviour
         {
             _target.distance = Vector3.Distance(_transform.position, _target.position);
         }
+        _isTargetReached = false;
     }
 
 
@@ -281,6 +294,7 @@ public abstract class AIStateMachine : MonoBehaviour
     {
         if (_targetTrigger == null || other != _targetTrigger) return;
 
+        _isTargetReached = true;
         //notify child state
         if (_curState)
         {
@@ -288,15 +302,26 @@ public abstract class AIStateMachine : MonoBehaviour
         }
     }
 
+    /*********************************************************/
+    protected virtual void OnTriggerStay(Collider other)
+    {
+        if (_targetTrigger == null || other != _targetTrigger) return;
+
+        _isTargetReached = true;
+        
+    }
+
+
 
     /*********************************************************/
     //Informs the child state that the AI entity is no longer at
     //its desination (Typically true when a new target has been)
     //set by the child
-    protected virtual void OnTriggerExit(Collider other)
+    protected void OnTriggerExit(Collider other)
     {
         if (_targetTrigger == null || other != _targetTrigger) return;
 
+        _isTargetReached = false;
         //notify child state
         if (_curState)
         {

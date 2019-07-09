@@ -7,9 +7,11 @@ public class AIZombieState_Alerted1 : AIZombieState
     [SerializeField][Range(1,60)] float _maxDuration =10.0f;
     [SerializeField] float _waypointAngleThreshold = 90.0f;
     [SerializeField] float _threatAngleThreshhold = 10.0f;
+    [SerializeField] float _directionChangeTime = 1.5f;
 
     //private 
     float _timer = 0.0f;
+    float _directionChangeTimer = 0.0f;
 
 
     /*********************************************************/
@@ -27,6 +29,7 @@ public class AIZombieState_Alerted1 : AIZombieState
         _zombieStateMachine.feeding = false;
         _zombieStateMachine.attackType = 0;
         _timer = _maxDuration;
+        _directionChangeTimer = 0.0f;
     }
 
 
@@ -45,6 +48,7 @@ public class AIZombieState_Alerted1 : AIZombieState
         //Debug.Log(_zombieStateMachine.seeking);
         //reduce timer
         _timer -= Time.deltaTime;
+        _directionChangeTimer += Time.deltaTime;
         //transition into a patrol state
         if (_timer <= 0.0f) return AIStateType.Patrol;
 
@@ -75,7 +79,7 @@ public class AIZombieState_Alerted1 : AIZombieState
 
         float angle;
         //if audio threat and light threat
-        if (_zombieStateMachine.targetType == AITargetType.Audio || _zombieStateMachine.targetType == AITargetType.Visual_Light)
+        if ((_zombieStateMachine.targetType == AITargetType.Audio || _zombieStateMachine.targetType == AITargetType.Visual_Light)&& !_zombieStateMachine.isTargetReached)
         {
             //positive right, negative left
             angle = AIState.FindSignedAngle(_zombieStateMachine.transform.forward, _zombieStateMachine.targetPosition - _zombieStateMachine.transform.position);
