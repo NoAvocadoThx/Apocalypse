@@ -54,6 +54,19 @@ public abstract class AIState : MonoBehaviour
     }
 
 
+    /*********************************************************/
+    //return the signed angle between 2 vector3 in degrees
+    public static float FindSignedAngle(Vector3 fromVector,Vector3 toVector)
+    {
+        if (fromVector == toVector) return 0.0f;
+
+        float angle = Vector3.Angle(fromVector, toVector);
+        Vector3 cross = Vector3.Cross(fromVector, toVector);
+        angle *= Mathf.Sign(cross.y);
+        return angle;
+    }
+
+
 
     public virtual void OnAnimatorIKUpdated() { }
     public virtual void OnTriggerEvent(AITriggerEventType eventType, Collider other) { }
