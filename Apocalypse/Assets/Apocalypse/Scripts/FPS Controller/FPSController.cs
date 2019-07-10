@@ -5,6 +5,91 @@ using UnityEngine;
 
 
 public enum PlayerMoveStatus { NotMoving,Walking,Running,NotGrounded,Landing}
+[System.Serializable]
+public class CurveControlledBob
+{
+    //aniamtion curve
+    [SerializeField] AnimationCurve _bobcurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f),
+                                                                    new Keyframe(1f, 0f), new Keyframe(1.5f, -1f),
+                                                                    new Keyframe(2f, 0f));
+
+    // Inspector Assigned Bob Control Variables
+    [SerializeField] float _horizontalMultiplier = 0.01f;
+    [SerializeField] float _verticalMultiplier = 0.02f;
+    [SerializeField] float _verticaltoHorizontalSpeedRatio = 2.0f;
+    [SerializeField] float _baseInterval = 1.0f;
+
+    //private
+
+    private float _prevXPlayHead;
+    private float _prevYPlayHead;
+    private float _xPlayHead;
+    private float _yPlayHead;
+    private float _curveEndTime;
+    
+    //private List<CurveControlledBobEvent> _events = new List<CurveControlledBobEvent>();
+
+
+    /*********************************************************/
+    public void Initialize(float bobBaseInterval)
+    {
+        // Record time length of bob curve
+        _baseInterval = bobBaseInterval;
+        _curveEndTime = _bobcurve[_bobcurve.length - 1].time;
+        _xPlayHead = 0.0f;
+        _yPlayHead = 0.0f;
+        _prevXPlayHead = 0.0f;
+        _prevYPlayHead = 0.0f;
+    }
+
+
+    /*********************************************************/
+
+    public Vector3 GetVectorOffset(float speed)
+    {
+        _xPlayHead += (speed * Time.deltaTime) / _baseInterval;
+        _yPlayHead += ((speed * Time.deltaTime) / _baseInterval) * _verticaltoHorizontalSpeedRatio;
+
+        if (_xPlayHead > _curveEndTime)
+            _xPlayHead -= _curveEndTime;
+
+        if (_yPlayHead > _curveEndTime)
+            _yPlayHead -= _curveEndTime;
+
+        // Process Events
+        /*for (int i = 0; i < _events.Count; i++)
+        {
+            CurveControlledBobEvent ev = _events[i];
+            if (ev != null)
+            {
+                if (ev.Type == CurveControlledBobCallbackType.Vertical)
+                {
+                    if ((_prevYPlayHead < ev.Time && _yPlayHead >= ev.Time) ||
+                        (_prevYPlayHead > _yPlayHead && (ev.Time > _prevYPlayHead || ev.Time <= _yPlayHead)))
+                    {
+                        ev.Function();
+                    }
+                }
+                else
+                {
+                    if ((_prevXPlayHead < ev.Time && _xPlayHead >= ev.Time) ||
+                        (_prevXPlayHead > _xPlayHead && (ev.Time > _prevXPlayHead || ev.Time <= _xPlayHead)))
+                    {
+                        ev.Function();
+                    }
+                }
+            }
+        }*/
+
+        float xPos = _bobcurve.Evaluate(_xPlayHead) * _horizontalMultiplier;
+        float yPos = _bobcurve.Evaluate(_yPlayHead) * _verticalMultiplier;
+
+        _prevXPlayHead = _xPlayHead;
+        _prevYPlayHead = _yPlayHead;
+
+        return new Vector3(xPos, yPos, 0f);
+    }
+}
 
 [RequireComponent(typeof(CharacterController))]
 public class FPSController : MonoBehaviour
@@ -15,6 +100,7 @@ public class FPSController : MonoBehaviour
     [SerializeField] private float _stickToGroundForce = 5.0f;
     [SerializeField] private float _gravityMultiplier = 2.5f;
     [SerializeField] private UnityStandardAssets.Characters.FirstPerson.MouseLook _mouseLook;
+    [SerializeField] private CurveControlledBob _bobCurve = null;
 
     //Private
 
