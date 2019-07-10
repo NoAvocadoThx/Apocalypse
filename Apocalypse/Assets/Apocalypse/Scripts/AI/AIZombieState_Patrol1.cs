@@ -21,7 +21,7 @@ public class AIZombieState_Patrol1 : AIZombieState
 
         //set state machine
         _zombieStateMachine.NavAgentControl(true, false);
-        _zombieStateMachine.speed = _speed;
+        
         _zombieStateMachine.seeking = 0;
         _zombieStateMachine.feeding = false;
         _zombieStateMachine.attackType = 0;
@@ -69,6 +69,16 @@ public class AIZombieState_Patrol1 : AIZombieState
             }
            
         }
+
+        if (_zombieStateMachine.navAgent.pathPending)
+        {
+            _zombieStateMachine.speed = 0.0f;
+            return AIStateType.Patrol;
+        }
+        else
+            _zombieStateMachine.speed = _speed;
+        
+
         // Calculate angle we need to turn through to be facing our target
         float angle = Vector3.Angle(_zombieStateMachine.transform.forward, (_zombieStateMachine.navAgent.steeringTarget - _zombieStateMachine.transform.position));
         // If its too big then drop out of Patrol and into Altered
@@ -91,7 +101,7 @@ public class AIZombieState_Patrol1 : AIZombieState
             ||_zombieStateMachine.navAgent.pathStatus!=NavMeshPathStatus.PathComplete)
         {
 
-            _zombieStateMachine.GetWaypointPosition(true);
+            _zombieStateMachine.navAgent.SetDestination(_zombieStateMachine.GetWaypointPosition(true));
         }
 
         return AIStateType.Patrol;

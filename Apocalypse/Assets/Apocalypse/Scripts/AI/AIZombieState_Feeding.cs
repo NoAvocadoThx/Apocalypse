@@ -6,11 +6,14 @@ public class AIZombieState_Feeding : AIZombieState
 {
     //inspector 
     [SerializeField] float _slerpSpeed = 5.0f;
+    [SerializeField] Transform _bloodParticleMount = null;
+    [SerializeField] [Range(0.01f, 1.0f)] float _bloodParticleBurstTime = 0.1f;
+    [SerializeField] [Range(1, 100)] int _bloodParticleBurstAmount = 10;
 
     //private 
     private int _eatingStateHash = Animator.StringToHash("Feeding State");
     private int _eatingLayerIndex = -1;
-
+    private float _timer = 0.0f;
     //override
     /*********************************************************/
     public override AIStateType GetStateType()
@@ -33,7 +36,7 @@ public class AIZombieState_Feeding : AIZombieState
         _zombieStateMachine.seeking = 0;
         _zombieStateMachine.feeding = true;
         _zombieStateMachine.attackType = 0;
-     
+        _timer = 0.0f;
         
     }
 
@@ -48,6 +51,7 @@ public class AIZombieState_Feeding : AIZombieState
     /*********************************************************/
     public override AIStateType OnUpdate()
     {
+        _timer += Time.deltaTime;
         if (_zombieStateMachine.satisfaction > 0.9f)
         {
             //set to false => resume path, not increment waypoint index
@@ -74,7 +78,20 @@ public class AIZombieState_Feeding : AIZombieState
         if (_zombieStateMachine.animator.GetCurrentAnimatorStateInfo(_eatingLayerIndex).shortNameHash==_eatingStateHash)
         {
             //calculate satisfaction over time and dont let it exceed 1
-            _zombieStateMachine.satisfaction = Mathf.Min(_zombieStateMachine.satisfaction + (Time.deltaTime * _zombieStateMachine.replenishRate), 1.0f);
+            _zombieStateMachine.satisfaction = Mathf.Min(_zombieStateMachine.satisfaction + (Time.deltaTime * _zombieStateMachine.replenishRate)/100.0f, 1.0f);
+            if (GameSceneManager.instance && GameSceneManager.instance.bloodParticle && _bloodParticleMount)
+            {
+                if (_timer > _bloodParticleBurstTime)
+                {
+                    //bind particle to the blood mount
+                    ParticleSystem system = GameSceneManager.instance.bloodParticle;
+                    system.transform.position = _bloodParticleMount.transform.position;
+                    system.transform.rotation = _bloodParticleMount.transform.rotation;
+                    system.simulationSpace = ParticleSystemSimulationSpace.World;
+                    system.Emit(_bloodParticleBurstAmount);
+                    _timer = 0.0f;
+                }
+            }
         }
 
         // If root rotation is not being used then we are responsible for keeping zombie rotated

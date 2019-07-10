@@ -5,7 +5,7 @@ using UnityEngine;
 public class GameSceneManager : MonoBehaviour
 {
 
-
+    [SerializeField] private ParticleSystem _bloodParticle= null;
     //statics
     private static GameSceneManager _instance = null;
     public static GameSceneManager instance
@@ -21,6 +21,9 @@ public class GameSceneManager : MonoBehaviour
 
     //private
     private Dictionary<int, AIStateMachine> _stateMachines = new Dictionary<int, AIStateMachine>();
+    
+    //get getter
+    public ParticleSystem bloodParticle { get { return _bloodParticle; } }
 
     //public
     /*********************************************************/
