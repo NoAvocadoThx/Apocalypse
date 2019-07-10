@@ -319,7 +319,7 @@ public abstract class AIStateMachine : MonoBehaviour
     protected virtual void OnTriggerEnter(Collider other)
     {
         if (_targetTrigger == null || other != _targetTrigger) return;
-        Debug.Log("OntriggerEnter");
+        //Debug.Log("OntriggerEnter");
         _isTargetReached = true;
         //notify child state
         if (_curState)
@@ -332,7 +332,7 @@ public abstract class AIStateMachine : MonoBehaviour
     protected virtual void OnTriggerStay(Collider other)
     {
         if (_targetTrigger == null || other != _targetTrigger) return;
-        Debug.Log("OntriggerStay");
+        //Debug.Log("OntriggerStay");
         _isTargetReached = true;
         
     }
@@ -346,7 +346,7 @@ public abstract class AIStateMachine : MonoBehaviour
     protected void OnTriggerExit(Collider other)
     {
         if (_targetTrigger == null || other != _targetTrigger) return;
-        Debug.Log("OntriggerExit");
+       // Debug.Log("OntriggerExit");
         _isTargetReached = false;
         //notify child state
         if (_curState)

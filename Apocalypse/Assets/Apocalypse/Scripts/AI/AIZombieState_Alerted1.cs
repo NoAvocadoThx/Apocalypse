@@ -75,7 +75,7 @@ public class AIZombieState_Alerted1 : AIZombieState
             _timer = _maxDuration;
         }
         //if find food and no audio threat, run to food
-        if (_zombieStateMachine.audioThreat.type==AITargetType.None&&_zombieStateMachine.visualThreat.type == AITargetType.Visual_Food)
+        if (_zombieStateMachine.audioThreat.type==AITargetType.None&&_zombieStateMachine.visualThreat.type == AITargetType.Visual_Food&&_zombieStateMachine.targetType==AITargetType.None)
         {
             _zombieStateMachine.SetTarget(_zombieStateMachine.visualThreat);
             return AIStateType.Pursuit;
@@ -119,7 +119,16 @@ public class AIZombieState_Alerted1 : AIZombieState
             if (Mathf.Abs(angle) < _waypointAngleThreshold) return AIStateType.Patrol;
             _zombieStateMachine.seeking = (int)Mathf.Sign(angle);
         }
-
+        else
+        {
+            if (_directionChangeTimer > _directionChangeTime)
+            {
+               
+                _zombieStateMachine.seeking = (int)Mathf.Sign(Random.Range(-1.0f, 1.0f));
+                
+                _directionChangeTimer = 0.0f;
+            }
+        }
             return AIStateType.Alerted;
     }
 }
