@@ -454,7 +454,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.8
+  m_Radius: 1.4
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -530,7 +530,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -765,6 +765,66 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 590609068}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &661487451
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 661487452}
+  - component: {fileID: 661487453}
+  - component: {fileID: 661487454}
+  m_Layer: 10
+  m_Name: Mouth Trigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &661487452
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661487451}
+  m_LocalRotation: {x: 0.17760003, y: 0, z: 0, w: 0.9841028}
+  m_LocalPosition: {x: 0, y: 0.028, z: -0.074}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1707243786928995481}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 20.46, y: 0, z: 0}
+--- !u!136 &661487453
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661487451}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.08
+  m_Height: 0.47
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: 0.31}
+--- !u!114 &661487454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661487451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79a5a7fa4bb75c441bfc37b44fdc102c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parameter: Mouth
+  _bloodParticleAmount: 10
 --- !u!1 &715985517
 GameObject:
   m_ObjectHideFlags: 0
@@ -34179,7 +34239,7 @@ Light:
   serializedVersion: 9
   m_Type: 1
   m_Color: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
-  m_Intensity: 0.36
+  m_Intensity: 1.25
   m_Range: 1056.4
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -34275,7 +34335,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1151580557}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -28.44, y: 1.257, z: 39.51}
+  m_LocalPosition: {x: -8.87, y: 1.257, z: 26.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 536402358}
@@ -40277,13 +40337,42 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 180599448896596770}
-  m_Layer: 0
+  - component: {fileID: 942025776101562730}
+  - component: {fileID: 942025776101562731}
+  m_Layer: 10
   m_Name: RightHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
+--- !u!135 &942025776101562730
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942025776101562729}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.17
+  m_Center: {x: 0.14, y: 0, z: 0}
+--- !u!114 &942025776101562731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 942025776101562729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79a5a7fa4bb75c441bfc37b44fdc102c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parameter: RightHand
+  _bloodParticleAmount: 10
 --- !u!1 &942113148092609979
 GameObject:
   m_ObjectHideFlags: 0
@@ -40412,13 +40501,42 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4546963469382193916}
-  m_Layer: 0
+  - component: {fileID: 1034452371947913812}
+  - component: {fileID: 1034452371947913813}
+  m_Layer: 10
   m_Name: LeftHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
   m_IsActive: 1
+--- !u!135 &1034452371947913812
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034452371947913811}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.17
+  m_Center: {x: -0.12, y: 0, z: 0}
+--- !u!114 &1034452371947913813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1034452371947913811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79a5a7fa4bb75c441bfc37b44fdc102c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _parameter: LeftHand
+  _bloodParticleAmount: 10
 --- !u!1 &1093702666919996786
 GameObject:
   m_ObjectHideFlags: 0
@@ -40584,12 +40702,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9111962883546707506}
-  m_LocalRotation: {x: 0, y: 0, z: 6.9406986e-37, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 6.9417555e-37, w: 1}
   m_LocalPosition: {x: -1.7874591e-16, y: 0.09777018, z: 0.041873336}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 187813955}
   - {fileID: 4076257463227899560}
+  - {fileID: 661487452}
   m_Father: {fileID: 8572989239369604561}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -42250,6 +42369,7 @@ GameObject:
   - component: {fileID: 8296172668569343550}
   - component: {fileID: 8296172668569343551}
   - component: {fileID: 8296172668569343552}
+  - component: {fileID: 8296172668569343553}
   m_Layer: 8
   m_Name: AI Entity
   m_TagString: Untagged
@@ -42328,13 +42448,13 @@ MonoBehaviour:
   _randomPatrol: 0
   _curWaypoint: -1
   _stoppingDistance: 1.07
-  _fov: 153
+  _fov: 154
   _sight: 0.5
   _hearing: 1
   _aggression: 0.5
   _health: 100
   _intelligence: 1
-  _satisfaction: 0.016
+  _satisfaction: 0.995
   _replenishRate: 2
   _depletionRate: 0.1
 --- !u!114 &8296172668569343548
@@ -42401,6 +42521,8 @@ MonoBehaviour:
   _repathAudioMinDuration: 0.25
   _repathAudioMaxDuration: 5
   _maxDuration: 40
+  _lookAtWeight: 0.7
+  _lookAtAngleThreshold: 15
 --- !u!114 &8296172668569343552
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42417,6 +42539,23 @@ MonoBehaviour:
   _bloodParticleMount: {fileID: 187813955}
   _bloodParticleBurstTime: 0.1
   _bloodParticleBurstAmount: 10
+--- !u!114 &8296172668569343553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8296172668569343543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4180d2d850f9154593e533b039afd99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 2
+  _lookAtWeight: 0.7
+  _lookAtAngleThreshold: 15
+  _stoppingDistance: 1.3
+  _slerpSpeed: 5
 --- !u!4 &8471817553450068022
 Transform:
   m_ObjectHideFlags: 0
@@ -42716,7 +42855,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1707243786928995481}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
