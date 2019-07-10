@@ -39,6 +39,8 @@ public class CurveControlledBob
     private float _curveEndTime;
     private List<CurveControlledBobEvent> _events = new List<CurveControlledBobEvent>();
 
+
+    /*********************************************************/
     public void Initialize()
     {
         // Record time length of bob curve
@@ -49,6 +51,7 @@ public class CurveControlledBob
         _prevYPlayHead = 0.0f;
     }
 
+    /*********************************************************/
     public void RegisterEventCallback(float time, CurveControlledBobCallback function, CurveControlledBobCallbackType type)
     {
         CurveControlledBobEvent ccbeEvent = new CurveControlledBobEvent();
@@ -64,6 +67,8 @@ public class CurveControlledBob
         );
     }
 
+
+    /*********************************************************/
     public Vector3 GetVectorOffset(float speed)
     {
         _xPlayHead += (speed * Time.deltaTime) / _baseInterval;
@@ -155,6 +160,7 @@ public class FPSController : MonoBehaviour
     public float runSpeed { get { return _runSpeed; } }
 
 
+    /*********************************************************/
     protected void Start()
     {
         // Cache component references
@@ -182,6 +188,8 @@ public class FPSController : MonoBehaviour
             _flashLight.SetActive(false);
     }
 
+
+    /*********************************************************/
     protected void Update()
     {
         // If we are falling increment timer
@@ -241,6 +249,8 @@ public class FPSController : MonoBehaviour
 
     }
 
+
+    /*********************************************************/
     protected void FixedUpdate()
     {
         // Read input from axis
@@ -302,6 +312,8 @@ public class FPSController : MonoBehaviour
             _camera.transform.localPosition = _localSpaceCameraPos;
     }
 
+
+    /*********************************************************/
     void PlayFootStepSound()
     {
         if (_isCrouching)
