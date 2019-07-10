@@ -65,7 +65,7 @@ public class AIZombieState_Attack1 : AIZombieState
                 newRot = Quaternion.LookRotation(targetPos - _zombieStateMachine.transform.position);
                 _zombieStateMachine.transform.rotation = Quaternion.Slerp(_zombieStateMachine.transform.rotation, newRot, Time.deltaTime * _slerpSpeed);
             }
-            Debug.Log("gen Attack");
+          //  Debug.Log("gen Attack");
             //generate attack int for attack type in animator
             _zombieStateMachine.attackType = Random.Range(1, 100);
 
