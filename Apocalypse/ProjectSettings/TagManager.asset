@@ -9,6 +9,9 @@ TagManager:
   - AI Food
   - Flash Light
   - Melee Zone
+  - Upper Body
+  - Lower Body
+  - Head
   layers:
   - Default
   - TransparentFX
