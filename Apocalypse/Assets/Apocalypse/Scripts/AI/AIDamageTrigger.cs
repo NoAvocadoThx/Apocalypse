@@ -7,12 +7,13 @@ public class AIDamageTrigger : MonoBehaviour
 
     [SerializeField] string _parameter = "";
     [SerializeField] int _bloodParticleAmount = 10;
+    [SerializeField] float _dmgAmount = 1.0f;
 
     //private
     AIStateMachine _stateMachine = null;
     Animator _animator = null;
     int _parameterHash = -1;
-
+    GameSceneManager _gameSceneManager = null;
 
     private void Start()
     {
@@ -22,6 +23,7 @@ public class AIDamageTrigger : MonoBehaviour
             _animator = _stateMachine.animator;
         }
         _parameterHash = Animator.StringToHash(_parameter);
+        _gameSceneManager = GameSceneManager.instance;
     }
 
     /*********************************************************/
@@ -43,6 +45,15 @@ public class AIDamageTrigger : MonoBehaviour
                 Debug.Log("Attacked Player!");
             }
             
+        }
+
+        if (_gameSceneManager)
+        {
+            PlayerInfo info = _gameSceneManager.GetPlayerInfo(other.GetInstanceID());
+            if (info!=null&&info.characterManager!=null)
+            {
+                info.characterManager.TakeDamage(_dmgAmount);
+            }
         }
     }
 }

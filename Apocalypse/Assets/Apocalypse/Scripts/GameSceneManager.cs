@@ -31,7 +31,7 @@ public class GameSceneManager : MonoBehaviour
 
     //private
     private Dictionary<int, AIStateMachine> _stateMachines = new Dictionary<int, AIStateMachine>();
-    
+    private Dictionary<int, PlayerInfo> _playerInfos = new Dictionary<int, PlayerInfo>();
     //get getter
     public ParticleSystem bloodParticle { get { return _bloodParticle; } }
 
@@ -54,6 +54,28 @@ public class GameSceneManager : MonoBehaviour
         if(_stateMachines.TryGetValue(key,out machine))
         {
             return machine;
+        }
+        return null;
+    }
+
+    /*********************************************************/
+    //Stores the passed playerInfo in the dictionary with the suppiled key
+    public void RegisterPlayerInfo(int key, PlayerInfo playerInfo)
+    {
+        if (!_playerInfos.ContainsKey(key))
+        {
+            _playerInfos[key] = playerInfo;
+        }
+    }
+
+    /*********************************************************/
+    //returns an PlayerInfo reference searched on by the ID of a player
+    public PlayerInfo GetPlayerInfo(int key)
+    {
+        PlayerInfo info = null;
+        if (_playerInfos.TryGetValue(key, out info))
+        {
+            return info;
         }
         return null;
     }
