@@ -87,7 +87,8 @@ public class AIZombieState_Feeding : AIZombieState
                     ParticleSystem system = GameSceneManager.instance.bloodParticle;
                     system.transform.position = _bloodParticleMount.transform.position;
                     system.transform.rotation = _bloodParticleMount.transform.rotation;
-                    system.simulationSpace = ParticleSystemSimulationSpace.World;
+                    var settings = system.main;
+                    settings.simulationSpace = ParticleSystemSimulationSpace.World;
                     system.Emit(_bloodParticleBurstAmount);
                     _timer = 0.0f;
                 }

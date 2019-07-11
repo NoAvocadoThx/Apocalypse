@@ -59,15 +59,19 @@ public abstract class AIStateMachine : MonoBehaviour
     protected int _rootPositionRefCount = 0;
     protected int _rootRotationRedCount = 0;
     protected bool _isTargetReached = false;
+    protected List<Rigidbody> _bodyParts = new List<Rigidbody>();
+    protected int _AIBodyPartLayer = -1;
 
     //[SerializeField] so we can see from inspector
     [SerializeField] protected AIStateType _curStateType = AIStateType.Idle;
+    [SerializeField] Transform _rootBone = null;
     [SerializeField] protected SphereCollider _targetTrigger = null;
     [SerializeField] protected SphereCollider _sensorTrigger = null;
     [SerializeField] protected AIWaypointNetwork _waypointNetwork = null;
     [SerializeField] protected bool _randomPatrol = false;
     [SerializeField] protected int _curWaypoint = -1;
-    [SerializeField] [Range(0, 15)] protected float _stoppingDistance = 1.0f; 
+    [SerializeField] [Range(0, 15)] protected float _stoppingDistance = 1.0f;
+    
 
     //Component cache
     protected Animator _animator = null;
@@ -136,12 +140,28 @@ public abstract class AIStateMachine : MonoBehaviour
         _navAgent = GetComponent<NavMeshAgent>();
         _collider = GetComponent<Collider>();
 
+        _AIBodyPartLayer = LayerMask.NameToLayer("AI Body Part");
         if (GameSceneManager.instance != null)
         {
             //register State Mahcines with Scene database
             if (_collider) GameSceneManager.instance.RegisterAIStateMachine(_collider.GetInstanceID(), this);
             if (_sensorTrigger) GameSceneManager.instance.RegisterAIStateMachine(_sensorTrigger.GetInstanceID(), this);
 
+        }
+
+        //add rigidbody to children
+        if (_rootBone)
+        {
+            Rigidbody[] bodies = _rootBone.GetComponentsInChildren<Rigidbody>();
+            foreach(Rigidbody bodyPart in bodies)
+            {
+                if (bodyPart && bodyPart.gameObject.layer == _AIBodyPartLayer)
+                {
+                    _bodyParts.Add(bodyPart);
+                    //register the hitted rigidbody part
+                    GameSceneManager.instance.RegisterAIStateMachine(bodyPart.GetInstanceID(), this);
+                }
+            }
         }
     }
 
@@ -450,6 +470,13 @@ public abstract class AIStateMachine : MonoBehaviour
         }
 
         return Vector3.zero;
+    }
+
+    /*********************************************************/
+    //pos--the position of taking dmg, force --incoming dmg velocity
+    public virtual void TakeDamage(Vector3 pos, Vector3 force,int dmg,Rigidbody body,CharacterManager manager,int hitDir=0)
+    {
+        Debug.Log("YOU HIT ME, BOI!");
     }
 
     

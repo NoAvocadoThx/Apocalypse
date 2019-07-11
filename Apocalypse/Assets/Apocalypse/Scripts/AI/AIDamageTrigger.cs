@@ -40,7 +40,8 @@ public class AIDamageTrigger : MonoBehaviour
 
                 system.transform.position = transform.position;
                 system.transform.rotation = Camera.main.transform.rotation;
-                system.simulationSpace = ParticleSystemSimulationSpace.World;
+                var settings = system.main;
+                settings.simulationSpace = ParticleSystemSimulationSpace.World;
                 system.Emit(_bloodParticleAmount);
                 Debug.Log("Attacked Player!");
             }

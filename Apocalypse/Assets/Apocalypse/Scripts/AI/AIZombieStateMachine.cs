@@ -52,7 +52,7 @@ public class AIZombieStateMachine : AIStateMachine
         set { _speed = value; }
     }
 
-
+    /*********************************************************/
     //refesh animators each frame
     protected override void Update()
     {
@@ -67,6 +67,51 @@ public class AIZombieStateMachine : AIStateMachine
             _animator.SetInteger(_attackHash, _attackType);
         }
         _satisfaction = Mathf.Max(0, _satisfaction - ((_depletionRate * Time.deltaTime)/100.0f)*Mathf.Pow(_speed,3.0f));
+    }
+
+    /*********************************************************/
+   
+    //pos--the position of taking dmg, force --incoming dmg velocity
+    public override void TakeDamage(Vector3 pos, Vector3 force, int dmg, Rigidbody body, CharacterManager manager, int hitDir = 0)
+    {
+        if (GameSceneManager.instance && GameSceneManager.instance.bloodParticle)
+        {
+            //emit particle when hit
+            ParticleSystem system = GameSceneManager.instance.bloodParticle;
+            system.transform.position = pos;
+            var settings = system.main;
+            settings.simulationSpace = ParticleSystemSimulationSpace.World;
+            system.Emit(60);
+        }
+        health -= dmg;
+        
+        float hitStrenth = force.magnitude;
+        //if the force of the weapon if larger than 1
+        bool isRagdoll = (hitStrenth>1.0f);
+        if (health <= 0) isRagdoll = true;
+        //stop nav agent
+        if(_navAgent) _navAgent.speed = 0;
+        if (isRagdoll)
+        {
+            if (_navAgent) _navAgent.enabled = false;
+            if (_animator) _animator.enabled = false;
+            if (_collider) _collider.enabled = false;
+            //not anymore tracking target, just reset state
+            //may go to alerted state
+
+            
+            inMeleeRange = false;
+            foreach (Rigidbody body_i in _bodyParts)
+            {
+                //not gravity or other force
+                body_i.isKinematic = false;
+            }
+
+            if (hitStrenth > 1.0f)
+            {
+                body.AddForce(force, ForceMode.Impulse);
+            }
+        }
     }
 
 }
