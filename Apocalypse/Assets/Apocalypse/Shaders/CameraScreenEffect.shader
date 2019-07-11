@@ -5,7 +5,10 @@ Shader "Custom/Image Effect/CameraScreenEffect"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-		_BloodAmount("Blood Texture",float) = 0.5
+		_BloodTex("Blood Texture",2D) = "white"{}
+		_BloodBump("Blood Normal",2D) = "bump"{}
+		_BloodAmount("Blood Amount",Range(0,1)) = 0
+	    _Distortion("Distortion",Range(0,2))=1
     }
     SubShader
     {
@@ -41,14 +44,22 @@ Shader "Custom/Image Effect/CameraScreenEffect"
             }
 
             sampler2D _MainTex;
+			sampler2D _BloodTex;
+			sampler2D _BloodBump;
+			float _Distortion;
 			float _BloodAmount;
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
-                // just invert the colors
-                col.rgb = 1 - col.rgb;
-                return col;
+                
+			    fixed4 bloodColor = tex2D(_BloodTex, i.uv);
+				bloodColor.a = saturate(bloodColor.a+(_BloodAmount * 2 - 1));
+				half2 bump = UnpackNormal(tex2D(_BloodBump, i.uv)).xy;
+				fixed4 col = tex2D(_MainTex, i.uv+bump*bloodColor.a*_Distortion);
+				fixed4 overlayColor = col * bloodColor*3.0f;;
+				overlayColor = lerp(col, overlayColor, 0.75);
+			    fixed4 outColor = lerp(col,overlayColor,bloodColor.a);
+                return outColor;
             }
             ENDCG
         }
