@@ -154,6 +154,38 @@ public class AIZombieStateMachine : AIStateMachine
                 //hence setting the y components of the vectors to zero. 
                 transform.rotation *= Quaternion.FromToRotation(animatedDirection.normalized, ragdollDirection.normalized);
             }
+
+            // Calculate Interpolation value
+            float blendAmount = Mathf.Clamp01((Time.time - _ragdollEndTime - _mecanimTransitionTime) / _reanimationBlendTime);
+
+            // Calculate blended bone positions by interplating between ragdoll bone snapshots and animated bone positions
+            foreach (BodyPartSnapshot snapshot in _bodyPartSnapShots)
+            {
+                if (snapshot.transform == _rootBone)
+                {
+                    snapshot.transform.position = Vector3.Lerp(snapshot.position, snapshot.transform.position, blendAmount);
+                }
+
+                snapshot.transform.rotation = Quaternion.Slerp(snapshot.rotation, snapshot.transform.rotation, blendAmount);
+            }
+
+
+            // Conditional to exit reanimation mode
+            if (blendAmount == 1.0f)
+            {
+                _boneControlType = AIBoneControlType.Animated;
+                if (_navAgent) _navAgent.enabled = true;
+                if (_collider) _collider.enabled = true;
+
+                AIState newState = null;
+                if (_states.TryGetValue(AIStateType.Alerted, out newState))
+                {
+                    if (_curState != null) _curState.OnExitState();
+                    newState.OnEnterState();
+                    _curState = newState;
+                    _curStateType = AIStateType.Alerted;
+                }
+            }
         }
     }
 
@@ -185,6 +217,8 @@ public class AIZombieStateMachine : AIStateMachine
         if (_animator)
         {
             _animator.SetBool(_crawlHash, isCrawling);
+            _animator.SetInteger(_lowerBodyDamageHash, _lowerBodyDmg);
+            _animator.SetInteger(_upperBodyDamageHash, _upperBodyDmg);
         }
     }
 
