@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public enum AIStateType { None, Idle, Alerted, Patrol, Attack, Feeding, Pursuit, Dead}
 public enum AITargetType { None, Waypoint, Visual_Player,Visual_Light, Visual_Food,Audio}
 public enum AITriggerEventType { Enter,Exit,Stay}
+public enum AIBoneAlignmentType { XAxis, YAxis, ZAxis, XAxisInverted, YAxisInverted, ZAxisInverted }
 
 public struct AITarget
 {
@@ -61,10 +62,12 @@ public abstract class AIStateMachine : MonoBehaviour
     protected bool _isTargetReached = false;
     protected List<Rigidbody> _bodyParts = new List<Rigidbody>();
     protected int _AIBodyPartLayer = -1;
+    protected bool _cinematicEnabled = false;
 
     //[SerializeField] so we can see from inspector
     [SerializeField] protected AIStateType _curStateType = AIStateType.Idle;
-    [SerializeField] Transform _rootBone = null;
+    [SerializeField] protected Transform _rootBone = null;
+    [SerializeField] protected AIBoneAlignmentType _rootBoneAlignment = AIBoneAlignmentType.ZAxis;
     [SerializeField] protected SphereCollider _targetTrigger = null;
     [SerializeField] protected SphereCollider _sensorTrigger = null;
     [SerializeField] protected AIWaypointNetwork _waypointNetwork = null;
@@ -79,12 +82,13 @@ public abstract class AIStateMachine : MonoBehaviour
     protected Collider _collider = null;
     protected Transform _transform = null;
 
-    /*********************************************************/
+    
     // Public properties
     public bool inMeleeRange { get; set; }
     public bool isTargetReached { get { return _isTargetReached; } }
     public Animator animator { get { return _animator; } }
     public NavMeshAgent navAgent { get { return _navAgent; } }
+    public bool cinematicEnabled { get { return _cinematicEnabled; } set { _cinematicEnabled = value; } }
     public Vector3 sensorPosition
     {
         get
@@ -111,7 +115,7 @@ public abstract class AIStateMachine : MonoBehaviour
         }
     }
 
-    /*********************************************************/
+
     public bool useRootPosition { get { return _rootPositionRefCount > 0; } }
     public bool useRootRotation { get { return _rootRotationRedCount > 0; } }
     public AITargetType targetType { get { return _target.type; } }

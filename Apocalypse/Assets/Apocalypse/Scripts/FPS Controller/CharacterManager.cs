@@ -91,7 +91,7 @@ public class CharacterManager : MonoBehaviour
             if (stateMachine)
             {
                 //take damage
-                stateMachine.TakeDamage(hit.point,ray.direction*1.0f,25,hit.rigidbody,this,0);
+                stateMachine.TakeDamage(hit.point,ray.direction*4.0f,10,hit.rigidbody,this,0);
             }
         }
     }

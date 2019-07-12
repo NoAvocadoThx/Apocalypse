@@ -45,16 +45,19 @@ public class AIDamageTrigger : MonoBehaviour
                 system.Emit(_bloodParticleAmount);
                 Debug.Log("Attacked Player!");
             }
-            
+
+            if (_gameSceneManager)
+            {
+                PlayerInfo info = _gameSceneManager.GetPlayerInfo(other.GetInstanceID());
+                if (info != null && info.characterManager != null)
+                {
+                    Debug.Log("sd Player!");
+                    info.characterManager.TakeDamage(_dmgAmount);
+                }
+            }
+
         }
 
-        if (_gameSceneManager)
-        {
-            PlayerInfo info = _gameSceneManager.GetPlayerInfo(other.GetInstanceID());
-            if (info!=null&&info.characterManager!=null)
-            {
-                info.characterManager.TakeDamage(_dmgAmount);
-            }
-        }
+     
     }
 }
