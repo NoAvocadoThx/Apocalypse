@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public enum AIBoneControlType { Animated,Ragdoll, RagdollToAnim}
 //at start of reanimation, take snapshot of the zombie
@@ -35,6 +36,7 @@ public class AIZombieStateMachine : AIStateMachine
     [SerializeField] float _depletionRate = 0.1f;
     [SerializeField] float _reanimationBlendTime = 1.5f;
     [SerializeField] float _reanimationWaitTime = 3.0f;
+    [SerializeField] LayerMask _geometryLayers = 0;
 
     // Private
     private int _seeking = 0;
@@ -63,6 +65,10 @@ public class AIZombieStateMachine : AIStateMachine
     private int _crawlHash = Animator.StringToHash("Crawling");
     private int _hitTypeHash = Animator.StringToHash("HitType");
     private int _hitTriggerHash = Animator.StringToHash("Hit");
+    private int _lowerBodyDamageHash = Animator.StringToHash("Low Body Dmg");
+    private int _upperBodyDamageHash = Animator.StringToHash("High Body Dmg");
+    private int _reanimateFromBackHash = Animator.StringToHash("Reanimate From Back");
+    private int _reanimateFromFrontHash = Animator.StringToHash("Reanimate From Front");
 
 
     //public Properties
@@ -102,6 +108,53 @@ public class AIZombieStateMachine : AIStateMachine
             _animator.SetInteger(_attackHash, _attackType);
         }
         _satisfaction = Mathf.Max(0, _satisfaction - ((_depletionRate * Time.deltaTime)/100.0f)*Mathf.Pow(_speed,3.0f));
+    }
+
+
+    /*********************************************************/
+    protected virtual void LateUpdate()
+    {
+        if (_boneControlType == AIBoneControlType.RagdollToAnim)
+        {
+            //if in wait time to avoid wierd blend animation
+            if (Time.time <= _ragdollEndTime + _mecanimTransitionTime)
+            {
+                Vector3 animatedToRagdoll = _ragdollHipPosition - _rootBone.position;
+                Vector3 newRootPosition = transform.position + animatedToRagdoll;
+
+                RaycastHit[] hits = Physics.RaycastAll(newRootPosition + (Vector3.up * 0.25f), Vector3.down, float.MaxValue, _geometryLayers);
+                newRootPosition.y = float.MinValue;
+                foreach (RaycastHit hit in hits)
+                {
+                    if (!hit.transform.IsChildOf(transform))
+                    {
+                        newRootPosition.y = Mathf.Max(hit.point.y, newRootPosition.y);
+                    }
+                }
+
+                NavMeshHit navMeshHit;
+                if (NavMesh.SamplePosition(newRootPosition, out navMeshHit, 25.0f, NavMesh.AllAreas))
+                {
+                    transform.position = navMeshHit.position;
+                }
+                else
+                {
+                    transform.position = newRootPosition;
+                }
+
+
+                Vector3 ragdollDirection = _ragdollHeadPosition - _ragdollFeetPosition;
+                ragdollDirection.y = 0.0f;
+
+                Vector3 meanFeetPosition = 0.5f * (_animator.GetBoneTransform(HumanBodyBones.LeftFoot).position + _animator.GetBoneTransform(HumanBodyBones.RightFoot).position);
+                Vector3 animatedDirection = _animator.GetBoneTransform(HumanBodyBones.Head).position - meanFeetPosition;
+                animatedDirection.y = 0.0f;
+
+                //Try to match the rotations. Note that we can only rotate around Y axis, as the animated characted must stay upright,
+                //hence setting the y components of the vectors to zero. 
+                transform.rotation *= Quaternion.FromToRotation(animatedDirection.normalized, ragdollDirection.normalized);
+            }
+        }
     }
 
     /*********************************************************/
@@ -319,10 +372,68 @@ public class AIZombieStateMachine : AIStateMachine
             }
         }
     }
+
+
    //Starts the reanimation procedure
-   
     private IEnumerator Reanimate()
     {
+        if (_boneControlType != AIBoneControlType.Ragdoll || !_animator) yield break;
 
+        //wait time before reanimate
+        yield return new WaitForSeconds(_reanimationWaitTime);
+
+        // Record time at start of reanimation procedure
+        _ragdollEndTime = Time.time;
+        // Set all rigidbodies back to being kinematic
+        foreach (Rigidbody body in _bodyParts)
+        {
+            body.isKinematic = true;
+        }
+        // Put us in reanimation mode
+        _boneControlType = AIBoneControlType.RagdollToAnim;
+
+        // Record postions and rotations of all bones prior to reanimation
+        foreach (BodyPartSnapshot snapShot in _bodyPartSnapShots)
+        {
+            snapShot.position = snapShot.transform.position;
+            snapShot.rotation = snapShot.transform.rotation;
+        }
+        // Record the ragdolls head and feet position
+        _ragdollHeadPosition = _animator.GetBoneTransform(HumanBodyBones.Head).position;
+        _ragdollFeetPosition = (_animator.GetBoneTransform(HumanBodyBones.LeftFoot).position + _animator.GetBoneTransform(HumanBodyBones.RightFoot).position) * 0.5f;
+        _ragdollHipPosition = _rootBone.position;
+        // Enable Animator
+        _animator.enabled = true;
+
+        if (_rootBone != null)
+        {
+            //check if the model's hips is facing forward(z as default)
+            float forwardTest;
+
+            switch (_rootBoneAlignment)
+            {
+                case AIBoneAlignmentType.ZAxis:
+                    forwardTest = _rootBone.forward.y; break;
+                case AIBoneAlignmentType.ZAxisInverted:
+                    forwardTest = -_rootBone.forward.y; break;
+                case AIBoneAlignmentType.YAxis:
+                    forwardTest = _rootBone.up.y; break;
+                case AIBoneAlignmentType.YAxisInverted:
+                    forwardTest = -_rootBone.up.y; break;
+                case AIBoneAlignmentType.XAxis:
+                    forwardTest = _rootBone.right.y; break;
+                case AIBoneAlignmentType.XAxisInverted:
+                    forwardTest = -_rootBone.right.y; break;
+                default:
+                    forwardTest = _rootBone.forward.y; break;
+            }
+
+            // Set the trigger in the animator
+            if (forwardTest >= 0)
+                _animator.SetTrigger(_reanimateFromBackHash);
+            else
+                _animator.SetTrigger(_reanimateFromFrontHash);
+        }
+       
     }
 }
