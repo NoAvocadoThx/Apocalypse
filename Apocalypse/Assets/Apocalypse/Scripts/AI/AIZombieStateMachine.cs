@@ -109,8 +109,10 @@ public class AIZombieStateMachine : AIStateMachine
     {
         base.Start();
         // Create BodyPartSnapShot List
+        //get reference to zombie
         if (_rootBone != null)
         {
+            //get all children
             Transform[] transforms = _rootBone.GetComponentsInChildren<Transform>();
             foreach (Transform trans in transforms)
             {
@@ -180,7 +182,11 @@ public class AIZombieStateMachine : AIStateMachine
                 UpdatedAnimationDmg();
                 if (_health > 0)
                 {
-                    //TODO
+                    if (_reanimationCoroutine != null)
+                        StopCoroutine(_reanimationCoroutine);
+
+                    _reanimationCoroutine = Reanimate();
+                    StartCoroutine(_reanimationCoroutine);
                 }
 
             }
@@ -305,9 +311,18 @@ public class AIZombieStateMachine : AIStateMachine
             //reanimation zombies
             if (_health>0)
             {
+                if (_reanimationCoroutine != null)
+                    StopCoroutine(_reanimationCoroutine);
 
+                _reanimationCoroutine = Reanimate();
+                StartCoroutine(_reanimationCoroutine);
             }
         }
     }
+   //Starts the reanimation procedure
+   
+    private IEnumerator Reanimate()
+    {
 
+    }
 }
