@@ -43497,6 +43497,7 @@ MonoBehaviour:
   _waypointAngleThreshold: 25
   _threatAngleThreshhold: 10
   _directionChangeTime: 1.5
+  _slerpSpeed: 45
 --- !u!114 &8296172668569343551
 MonoBehaviour:
   m_ObjectHideFlags: 0

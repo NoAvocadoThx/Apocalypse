@@ -69,6 +69,7 @@ public class AIZombieStateMachine : AIStateMachine
     private int _upperBodyDamageHash = Animator.StringToHash("High Body Dmg");
     private int _reanimateFromBackHash = Animator.StringToHash("Reanimate From Back");
     private int _reanimateFromFrontHash = Animator.StringToHash("Reanimate From Front");
+    private int _stateHash = Animator.StringToHash("State");
 
 
     //public Properties
@@ -106,6 +107,7 @@ public class AIZombieStateMachine : AIStateMachine
             _animator.SetBool(_feedingHash, _feeding);
             _animator.SetInteger(_seekingHash, _seeking);
             _animator.SetInteger(_attackHash, _attackType);
+            _animator.SetInteger(_stateHash,(int) _curStateType);
         }
         _satisfaction = Mathf.Max(0, _satisfaction - ((_depletionRate * Time.deltaTime)/100.0f)*Mathf.Pow(_speed,3.0f));
     }
