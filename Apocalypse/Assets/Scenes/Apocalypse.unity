@@ -34340,7 +34340,7 @@ Light:
   serializedVersion: 9
   m_Type: 1
   m_Color: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
-  m_Intensity: 1.2
+  m_Intensity: 0.7
   m_Range: 1056.4
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -34382,7 +34382,7 @@ Light:
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
+  m_BounceIntensity: 0.44
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
@@ -34437,7 +34437,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1151580557}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.97, y: 1.03, z: 29.57}
+  m_LocalPosition: {x: -14.97, y: 1.03, z: 35.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 536402358}
@@ -34782,7 +34782,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1219914816}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: 0, y: 0.2, z: -2.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 536402358}
@@ -34799,7 +34799,7 @@ Light:
   serializedVersion: 9
   m_Type: 0
   m_Color: {r: 0.9150943, g: 0.89955497, b: 0.77696687, a: 1}
-  m_Intensity: 2.31
+  m_Intensity: 1.93
   m_Range: 18
   m_SpotAngle: 76.9
   m_InnerSpotAngle: 21.80208
@@ -40565,7 +40565,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.0011690538, y: -0.36544636, z: 0.0079078935}
+  m_ConnectedAnchor: {x: -0.0011690538, y: -0.36544642, z: 0.0079078935}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -40929,7 +40929,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.11311035, y: -0.13621564, z: -0.0037574428}
+  m_ConnectedAnchor: {x: 0.11311035, y: -0.1362157, z: -0.0037574428}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -41758,7 +41758,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.11311038, y: -0.13621573, z: -0.0037574382}
+  m_ConnectedAnchor: {x: -0.11311038, y: -0.13621567, z: -0.0037574382}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -42310,7 +42310,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.43125224, y: 0.27409744, z: 0.33411098}
+  m_Size: {x: 0.43125224, y: 0.38, z: 0.33411098}
   m_Center: {x: -0.0000037103891, y: 0.13704878, z: 0}
 --- !u!4 &4988157282019694025
 Transform:
@@ -42336,7 +42336,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8296172668569343543}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.124, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 925677837153035785}
@@ -42734,7 +42734,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0010556863, y: -0.36544675, z: 0.007909534}
+  m_ConnectedAnchor: {x: 0.0010556863, y: -0.3654467, z: 0.007909534}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -43427,6 +43427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _curStateType: 1
   _rootBone: {fileID: 4341065988243422020}
+  _rootBoneAlignment: 2
   _targetTrigger: {fileID: 1841000066}
   _sensorTrigger: {fileID: 715985519}
   _waypointNetwork: {fileID: 1296459041}
@@ -43438,10 +43439,20 @@ MonoBehaviour:
   _hearing: 1
   _aggression: 1
   _health: 100
+  _lowerBodyDmg: 100
+  _upperBodyDmg: 0
+  _upperThreshold: 30
+  _limpThreshold: 60
+  _crawlThreshold: 85
   _intelligence: 1
-  _satisfaction: 0.995
+  _satisfaction: 1
   _replenishRate: 2
   _depletionRate: 0.1
+  _reanimationBlendTime: 1.5
+  _reanimationWaitTime: 3
+  _geometryLayers:
+    serializedVersion: 2
+    m_Bits: 1
 --- !u!114 &8296172668569343548
 MonoBehaviour:
   m_ObjectHideFlags: 0
