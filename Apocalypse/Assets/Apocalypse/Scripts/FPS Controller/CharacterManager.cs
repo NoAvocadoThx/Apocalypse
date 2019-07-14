@@ -10,6 +10,10 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private CameraScreenEffect _cameraScreenBlood = null;
     [SerializeField] private Camera _cam = null;
     [SerializeField] private float _health = 100.0f;
+    [SerializeField] private AISoundEmitter _soundEmitter = null;
+    [SerializeField] private float _walkRadius = 0.0f;
+    [SerializeField] private float _runRadius = 7.0f;
+    [SerializeField] private float _landingRadius = 12.0f;
 
     //private 
     private Collider _collider = null;
@@ -63,6 +67,25 @@ public class CharacterManager : MonoBehaviour
         {
             DoDamage();
         }
+        if (_fpsController)
+        {
+            //if player is in low health
+            //blood will attract zombies
+            float newRadius =Mathf.Max((100.0f-_health)/8.0f, _walkRadius);
+            switch (_fpsController.movementStatus)
+            {
+                //set sound radius
+                case PlayerMoveStatus.Landing:newRadius = Mathf.Max(newRadius, _landingRadius);break;
+                case PlayerMoveStatus.Running:newRadius = Mathf.Max(newRadius, _runRadius);break;
+                //case PlayerMoveStatus.Walking:newRadius = Mathf.Max(newRadius, _walkRadius);break;
+
+
+            }
+            _soundEmitter.SetRadius(newRadius);
+        }
+        
+
+
     }
 
 
