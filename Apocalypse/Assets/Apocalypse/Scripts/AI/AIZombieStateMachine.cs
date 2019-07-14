@@ -70,6 +70,8 @@ public class AIZombieStateMachine : AIStateMachine
     private int _reanimateFromBackHash = Animator.StringToHash("Reanimate From Back");
     private int _reanimateFromFrontHash = Animator.StringToHash("Reanimate From Front");
     private int _stateHash = Animator.StringToHash("State");
+    private int _upperBodyLayer = -1;
+    private int _lowerBodyLayer = -1;
 
 
     //public Properties
@@ -92,6 +94,30 @@ public class AIZombieStateMachine : AIStateMachine
     {
         get { return _speed; }
         set { _speed = value; }
+    }
+
+
+
+    /*********************************************************/
+    protected override void Start()
+    {
+        base.Start();
+        _lowerBodyLayer = _animator.GetLayerIndex("Lower Body");
+        _upperBodyLayer = _animator.GetLayerIndex("Upper Body");
+        // Create BodyPartSnapShot List
+        //get reference to zombie
+        if (_rootBone != null)
+        {
+            //get all children
+            Transform[] transforms = _rootBone.GetComponentsInChildren<Transform>();
+            foreach (Transform trans in transforms)
+            {
+                BodyPartSnapshot snapShot = new BodyPartSnapshot();
+                snapShot.transform = trans;
+                _bodyPartSnapShots.Add(snapShot);
+            }
+        }
+        UpdatedAnimationDmg();
     }
 
     /*********************************************************/
@@ -135,13 +161,16 @@ public class AIZombieStateMachine : AIStateMachine
                 }
 
                 NavMeshHit navMeshHit;
+                //caluclate the reanimation position plus the baseOffset.
+                Vector3 baseOffset = Vector3.zero;
+                if (_navAgent) baseOffset.y = _navAgent.baseOffset;
                 if (NavMesh.SamplePosition(newRootPosition, out navMeshHit, 25.0f, NavMesh.AllAreas))
                 {
-                    transform.position = navMeshHit.position;
+                    transform.position = navMeshHit.position+baseOffset;
                 }
                 else
                 {
-                    transform.position = newRootPosition;
+                    transform.position = newRootPosition+baseOffset;
                 }
 
 
@@ -191,37 +220,35 @@ public class AIZombieStateMachine : AIStateMachine
         }
     }
 
-    /*********************************************************/
-    protected override void Start()
-    {
-        base.Start();
-        // Create BodyPartSnapShot List
-        //get reference to zombie
-        if (_rootBone != null)
-        {
-            //get all children
-            Transform[] transforms = _rootBone.GetComponentsInChildren<Transform>();
-            foreach (Transform trans in transforms)
-            {
-                BodyPartSnapshot snapShot = new BodyPartSnapshot();
-                snapShot.transform = trans;
-                _bodyPartSnapShots.Add(snapShot);
-            }
-        }
-        UpdatedAnimationDmg();
-    }
+   
 
 
     /*********************************************************/
 
     protected void UpdatedAnimationDmg()
     {
+        //max dmg is 100
+        if (_upperBodyDmg > 100) _upperBodyDmg = 100;
+        if (_lowerBodyDmg > 100) _lowerBodyDmg = 100;
         if (_animator)
         {
+            //play lower body limp animation
+            if (_lowerBodyLayer != -1)
+            {
+                _animator.SetLayerWeight(_lowerBodyLayer, (_lowerBodyDmg > _limpThreshold && _lowerBodyDmg < _crawlThreshold) ? 1.0f : 0.0f);
+
+            }
+            //play upper body limp animation
+            if (_upperBodyLayer != -1)
+            {
+                _animator.SetLayerWeight(_upperBodyLayer, (_upperBodyDmg > _limpThreshold && _upperBodyDmg < _crawlThreshold) ? 1.0f : 0.0f);
+
+            }
             _animator.SetBool(_crawlHash, isCrawling);
             _animator.SetInteger(_lowerBodyDamageHash, _lowerBodyDmg);
             _animator.SetInteger(_upperBodyDamageHash, _upperBodyDmg);
         }
+
     }
 
 
@@ -230,6 +257,7 @@ public class AIZombieStateMachine : AIStateMachine
     //pos--the position of taking dmg, force --incoming dmg velocity
     public override void TakeDamage(Vector3 pos, Vector3 force, int dmg, Rigidbody body, CharacterManager manager, int hitDir = 0)
     {
+        
         if (GameSceneManager.instance && GameSceneManager.instance.bloodParticle)
         {
             //emit particle when hit
@@ -329,7 +357,7 @@ public class AIZombieStateMachine : AIStateMachine
 
         //ragdoll to be true
         //if down, crawling, cinematic enabled or attack from behind
-        if (_boneControlType != AIBoneControlType.Animated || isCrawling || cinematicEnabled)// || attackerPos.z < 0)
+        if (_boneControlType != AIBoneControlType.Animated || isCrawling || cinematicEnabled || attackerPos.z < 0)
             isRagdoll = true;
 
         //not ragdoll

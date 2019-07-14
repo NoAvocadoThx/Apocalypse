@@ -43439,7 +43439,7 @@ MonoBehaviour:
   _hearing: 1
   _aggression: 1
   _health: 100
-  _lowerBodyDmg: 100
+  _lowerBodyDmg: 0
   _upperBodyDmg: 0
   _upperThreshold: 30
   _limpThreshold: 60
