@@ -8,6 +8,9 @@ public class HandGun : MonoBehaviour
     
    // [SerializeField] private AISoundEmitter _soundEmitter = null;
     [SerializeField] float _fireRate = 1.0f;
+    [SerializeField] Transform _gunParticleMount = null;
+    [SerializeField] [Range(1, 100)] int _gunParticleBurstAmount = 100;
+    [SerializeField] [Range(0.01f, 1.0f)] float _gunParticleBurstTime = 0.1f;
 
     private FPSController _fPSController = null;
     private CharacterManager _charactermanager = null;
@@ -67,10 +70,16 @@ public class HandGun : MonoBehaviour
             _nextTimeToShoot = Time.time + 1.0f / _fireRate;
             _animator.SetBool(_isShootingHash, true);
            
-                audioSource.Play();
-            
+            audioSource.Play();
 
-           
+
+            //bind particle to the gun mount
+            ParticleSystem system = GameSceneManager.instance.gunParticle;
+            system.transform.position = _gunParticleMount.transform.position;
+            system.transform.rotation = _gunParticleMount.transform.rotation;
+            var settings = system.main;
+            settings.simulationSpace = ParticleSystemSimulationSpace.World;
+            system.Play();
 
 
         }

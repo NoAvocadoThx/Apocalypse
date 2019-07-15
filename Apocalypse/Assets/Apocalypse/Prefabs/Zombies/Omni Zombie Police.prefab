@@ -1176,6 +1176,7 @@ MonoBehaviour:
   _geometryLayers:
     serializedVersion: 2
     m_Bits: 1
+  _screamPrefab: {fileID: 0}
 --- !u!114 &3116289684632051616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1241,8 +1242,8 @@ MonoBehaviour:
   _repathAudioMinDuration: 0.25
   _repathAudioMaxDuration: 5
   _maxDuration: 40
-  _lookAtWeight: 0.7
-  _lookAtAngleThreshold: 15
+  _lookAtWeight: 1
+  _lookAtAngleThreshold: 9.1
 --- !u!114 &3116289684632051676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1272,7 +1273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 2
-  _lookAtWeight: 0.7
+  _lookAtWeight: 1
   _lookAtAngleThreshold: 15
   _stoppingDistance: 1.3
   _slerpSpeed: 5

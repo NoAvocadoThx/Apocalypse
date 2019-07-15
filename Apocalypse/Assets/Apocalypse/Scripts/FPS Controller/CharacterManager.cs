@@ -15,9 +15,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private float _runRadius = 7.0f;
     [SerializeField] private float _landingRadius = 12.0f;
     [SerializeField] private HandGun _handGun = null;
-    [SerializeField] Transform _gunParticleMount = null;
-    [SerializeField] [Range(1, 100)] int _gunParticleBurstAmount = 100;
-    [SerializeField] [Range(0.01f, 1.0f)] float _gunParticleBurstTime = 0.1f;
+
 
     //private 
     private Collider _collider = null;
@@ -77,13 +75,7 @@ public class CharacterManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0)&&_fpsController.movementStatus!=PlayerMoveStatus.Running)
         {
             DoDamage();
-            //bind particle to the gun mount
-            ParticleSystem system = GameSceneManager.instance.gunParticle;
-            system.transform.position = _gunParticleMount.transform.position;
-            system.transform.rotation = _gunParticleMount.transform.rotation;
-            var settings = system.main;
-            settings.simulationSpace = ParticleSystemSimulationSpace.World;
-            system.Play();
+          
            
 
         }

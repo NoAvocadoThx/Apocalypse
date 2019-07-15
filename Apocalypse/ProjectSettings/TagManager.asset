@@ -12,6 +12,7 @@ TagManager:
   - Upper Body
   - Lower Body
   - Head
+  - Weapon
   layers:
   - Default
   - TransparentFX
@@ -28,7 +29,7 @@ TagManager:
   - Visual Aggravator
   - Audio Aggravator
   - AI Body Part
-  - 
+  - Weapon
   - 
   - 
   - 
