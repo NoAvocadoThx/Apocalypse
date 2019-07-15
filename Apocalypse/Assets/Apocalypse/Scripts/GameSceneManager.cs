@@ -16,6 +16,7 @@ public class GameSceneManager : MonoBehaviour
 {
 
     [SerializeField] private ParticleSystem _bloodParticle= null;
+    [SerializeField] private ParticleSystem _gunParticle = null;
     //statics
     private static GameSceneManager _instance = null;
     public static GameSceneManager instance
@@ -34,6 +35,7 @@ public class GameSceneManager : MonoBehaviour
     private Dictionary<int, PlayerInfo> _playerInfos = new Dictionary<int, PlayerInfo>();
     //get getter
     public ParticleSystem bloodParticle { get { return _bloodParticle; } }
+    public ParticleSystem gunParticle { get { return _gunParticle; } }
 
     //public
     /*********************************************************/

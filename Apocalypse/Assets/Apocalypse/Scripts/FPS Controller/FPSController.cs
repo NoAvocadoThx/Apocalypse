@@ -145,6 +145,7 @@ public class FPSController : MonoBehaviour
     private bool _isWalking = true;
     private bool _isJumping = false;
     private bool _isCrouching = false;
+    private bool _isShooting = false;
     private Vector3 _localSpaceCameraPos = Vector3.zero;
     private float _controllerHeight = 0.0f;
 
@@ -158,6 +159,7 @@ public class FPSController : MonoBehaviour
     public PlayerMoveStatus movementStatus { get { return _movementStatus; } }
     public float walkSpeed { get { return _walkSpeed; } }
     public float runSpeed { get { return _runSpeed; } }
+    public bool isShooting { get { return _isShooting; } set { _isShooting = value; } }
     public CharacterController CharacterController { get { return _characterController; } }
 
     //dragged by zombie

@@ -14,6 +14,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private float _walkRadius = 0.0f;
     [SerializeField] private float _runRadius = 7.0f;
     [SerializeField] private float _landingRadius = 12.0f;
+    [SerializeField] private HandGun _handGun = null;
 
     //private 
     private Collider _collider = null;
@@ -21,10 +22,12 @@ public class CharacterManager : MonoBehaviour
     private CharacterController _characterController = null;
     private GameSceneManager _gameSceneManager = null;
     private int _AIBodypartLayer = -1;
+    private bool canDoDmg = false;
+
 
     /*********************************************************/
 
-   
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,10 +69,12 @@ public class CharacterManager : MonoBehaviour
     /*********************************************************/
     public void Update()
     {
+        
         //when press left key
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0)&&_fpsController.movementStatus!=PlayerMoveStatus.Running)
         {
             DoDamage();
+            
         }
         if (_fpsController)
         {

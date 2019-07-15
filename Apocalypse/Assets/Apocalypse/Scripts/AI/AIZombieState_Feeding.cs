@@ -83,8 +83,7 @@ public class AIZombieState_Feeding : AIZombieState
             _zombieStateMachine.satisfaction = Mathf.Min(_zombieStateMachine.satisfaction + (Time.deltaTime * _zombieStateMachine.replenishRate)/100.0f, 1.0f);
             if (GameSceneManager.instance && GameSceneManager.instance.bloodParticle && _bloodParticleMount)
             {
-                if (_timer > _bloodParticleBurstTime)
-                {
+               
                     //bind particle to the blood mount
                     ParticleSystem system = GameSceneManager.instance.bloodParticle;
                     system.transform.position = _bloodParticleMount.transform.position;
@@ -93,7 +92,7 @@ public class AIZombieState_Feeding : AIZombieState
                     settings.simulationSpace = ParticleSystemSimulationSpace.World;
                     system.Emit(_bloodParticleBurstAmount);
                     _timer = 0.0f;
-                }
+                
             }
         }
 
