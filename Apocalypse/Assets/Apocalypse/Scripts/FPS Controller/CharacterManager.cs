@@ -50,6 +50,10 @@ public class CharacterManager : MonoBehaviour
     public void TakeDamage(float amount)
     {
         _health = Mathf.Max(_health - (amount*Time.deltaTime), 0.0f);
+        if (_fpsController)
+        {
+            _fpsController.dragMultiplier = 0.0f;
+        }
         if (_cameraScreenBlood)
         {
             _cameraScreenBlood.minBloodAmount = 1.0f - (_health / 100.0f);
@@ -82,6 +86,7 @@ public class CharacterManager : MonoBehaviour
 
             }
             _soundEmitter.SetRadius(newRadius);
+            _fpsController.dragMultiplierLimit = Mathf.Max(_health / 100.0f, 0.25f);
         }
         
 

@@ -2407,7 +2407,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Omni Zombie 3
+  m_Name: Omni Zombie 4
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Speed

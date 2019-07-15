@@ -159,6 +159,16 @@ public class FPSController : MonoBehaviour
     public float walkSpeed { get { return _walkSpeed; } }
     public float runSpeed { get { return _runSpeed; } }
 
+    //dragged by zombie
+    float _dragMultiplier = 1.0f;
+    float _dragLimit = 1.0f;
+    [SerializeField] [Range(0.0f, 1.0f)] float _zombieStickness = 0.5f;
+    public float dragMultiplierLimit { get { return _dragLimit; }set { _dragLimit = Mathf.Clamp01(value); } }
+    public float dragMultiplier
+    {
+        get { return _dragMultiplier; }
+        set { _dragMultiplier = Mathf.Min(value, _dragLimit); }
+    }
 
     /*********************************************************/
     protected void Start()
@@ -245,7 +255,8 @@ public class FPSController : MonoBehaviour
             _movementStatus = PlayerMoveStatus.Running;
 
         _previouslyGrounded = _characterController.isGrounded;
-
+        //recover the speed
+        _dragMultiplier = Mathf.Min(_dragMultiplier + Time.deltaTime, _dragLimit);
 
     }
 
@@ -275,8 +286,8 @@ public class FPSController : MonoBehaviour
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
         // Scale movement by our current speed (walking value or running value)
-        _moveDirection.x = desiredMove.x * speed;
-        _moveDirection.z = desiredMove.z * speed;
+        _moveDirection.x = desiredMove.x * speed*_dragMultiplier;
+        _moveDirection.z = desiredMove.z * speed*_dragMultiplier;
 
         // If grounded
         if (_characterController.isGrounded)
@@ -321,5 +332,16 @@ public class FPSController : MonoBehaviour
 
         AudioSources[_audioToUse].Play();
         _audioToUse = (_audioToUse == 0) ? 1 : 0;
+    }
+
+    /*********************************************************/
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (GameSceneManager.instance.GetAIStateMachine(hit.collider.GetInstanceID()) != null)
+        {
+            _dragMultiplier = 1.0f - _zombieStickness;
+
+        }
     }
 }
