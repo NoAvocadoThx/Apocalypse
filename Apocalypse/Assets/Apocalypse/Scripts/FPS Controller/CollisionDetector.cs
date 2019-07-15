@@ -6,6 +6,7 @@ public class CollisionDetector : MonoBehaviour
 {
 
     FPSController _controller = null;
+    /*********************************************************/
     // Start is called before the first frame update
     void Start()
     {
