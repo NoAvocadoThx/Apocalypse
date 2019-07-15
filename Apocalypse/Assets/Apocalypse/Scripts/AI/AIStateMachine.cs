@@ -483,5 +483,19 @@ public abstract class AIStateMachine : MonoBehaviour
         Debug.Log("YOU HIT ME, BOI!");
     }
 
-    
+    /*********************************************************/
+    //forcelly set state
+    public void SetState(AIStateType state)
+    {
+        if (_states.ContainsKey(state)&&state!=_curStateType)
+        {
+            if (_curState)
+            {
+                _curState.OnExitState();
+            }
+            _curState = _states[state];
+            _curStateType = state;
+            _curState.OnEnterState();
+        }
+    }
 }

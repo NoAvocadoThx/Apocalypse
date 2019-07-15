@@ -158,6 +158,7 @@ public class FPSController : MonoBehaviour
     public PlayerMoveStatus movementStatus { get { return _movementStatus; } }
     public float walkSpeed { get { return _walkSpeed; } }
     public float runSpeed { get { return _runSpeed; } }
+    public CharacterController CharacterController { get { return _characterController; } }
 
     //dragged by zombie
     float _dragMultiplier = 1.0f;
@@ -168,7 +169,9 @@ public class FPSController : MonoBehaviour
     {
         get { return _dragMultiplier; }
         set { _dragMultiplier = Mathf.Min(value, _dragLimit); }
+        
     }
+    
 
     /*********************************************************/
     protected void Start()
@@ -336,12 +339,8 @@ public class FPSController : MonoBehaviour
 
     /*********************************************************/
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
+   public void DoCollision()
     {
-        if (GameSceneManager.instance.GetAIStateMachine(hit.collider.GetInstanceID()) != null)
-        {
-            _dragMultiplier = 1.0f - _zombieStickness;
-
-        }
+        _dragMultiplier = 1.0f - _zombieStickness;
     }
 }
