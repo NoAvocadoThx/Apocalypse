@@ -37,6 +37,7 @@ public class AIZombieStateMachine : AIStateMachine
     [SerializeField] float _reanimationBlendTime = 1.5f;
     [SerializeField] float _reanimationWaitTime = 3.0f;
     [SerializeField] LayerMask _geometryLayers = 0;
+    [SerializeField] AISoundEmitter _screamPrefab = null;
 
     // Private
     private int _seeking = 0;

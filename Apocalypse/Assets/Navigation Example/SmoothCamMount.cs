@@ -6,7 +6,7 @@ public class SmoothCamMount : MonoBehaviour
 {
     public Transform Mount = null;
     public float speed = 5.0f;
-    private int _attackHash = 0;
+    
     // Start is called before the first frame update
     void Start()
     {

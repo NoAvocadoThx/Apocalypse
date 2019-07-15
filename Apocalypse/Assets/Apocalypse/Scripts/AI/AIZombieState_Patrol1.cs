@@ -29,7 +29,7 @@ public class AIZombieState_Patrol1 : AIZombieState
         // set Destination
         _zombieStateMachine.navAgent.SetDestination(_zombieStateMachine.GetWaypointPosition(false));
         //resume patrol state if pause?
-        _zombieStateMachine.navAgent.Resume();
+        _zombieStateMachine.navAgent.isStopped = false;
     }
 
 

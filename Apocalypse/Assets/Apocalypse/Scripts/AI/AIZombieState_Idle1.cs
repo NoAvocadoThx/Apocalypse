@@ -74,7 +74,7 @@ public class AIZombieState_Idle1 : AIZombieState
         if (_timer > _idleTime)
         {
             _zombieStateMachine.navAgent.SetDestination(_zombieStateMachine.GetWaypointPosition(false));
-            _zombieStateMachine.navAgent.Resume();
+            _zombieStateMachine.navAgent.isStopped = false;
             return AIStateType.Alerted;
         }
 
