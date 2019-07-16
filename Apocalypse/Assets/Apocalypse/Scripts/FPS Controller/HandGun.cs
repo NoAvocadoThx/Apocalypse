@@ -9,7 +9,7 @@ public class HandGun : MonoBehaviour
    // [SerializeField] private AISoundEmitter _soundEmitter = null;
     [SerializeField] float _fireRate = 1.0f;
     [SerializeField] Transform _gunParticleMount = null;
-    [SerializeField] [Range(1, 100)] int _gunParticleBurstAmount = 100;
+
     [SerializeField] [Range(0.01f, 1.0f)] float _gunParticleBurstTime = 0.1f;
 
     private FPSController _fPSController = null;

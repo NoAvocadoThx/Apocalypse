@@ -14,7 +14,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private float _walkRadius = 0.0f;
     [SerializeField] private float _runRadius = 7.0f;
     [SerializeField] private float _landingRadius = 12.0f;
-    [SerializeField] private HandGun _handGun = null;
+
 
 
     //private 
