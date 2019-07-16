@@ -119,8 +119,7 @@ public class CurveControlledBob
 [RequireComponent(typeof(CharacterController))]
 public class FPSController : MonoBehaviour
 {
-    public List<AudioSource> AudioSources = new List<AudioSource>();
-    private int _audioToUse = 0;
+    
 
     // Inspector Assigned Locomotion Settings
     [SerializeField] private float _walkSpeed = 2.0f;
@@ -132,6 +131,8 @@ public class FPSController : MonoBehaviour
     [SerializeField] private float _runStepLengthen = 0.75f;
     [SerializeField] private CurveControlledBob _headBob = new CurveControlledBob();
     [SerializeField] private GameObject _flashLight = null;
+    [SerializeField] private AudioCollection _footsteps = null;
+    [SerializeField] private float _crouchAttenuation = 0.2f;
 
     // Use Standard Assets Mouse Look class for mouse input -> Camera Look Control
     [SerializeField] private UnityStandardAssets.Characters.FirstPerson.MouseLook _mouseLook = new UnityStandardAssets.Characters.FirstPerson.MouseLook();
@@ -332,11 +333,23 @@ public class FPSController : MonoBehaviour
     /*********************************************************/
     void PlayFootStepSound()
     {
-        if (_isCrouching)
-            return;
+        if (AudioManager.instance && _footsteps)
+        {
+            AudioClip audioClip;
+            if (_isCrouching)
+            {
+                //give random sound in second bank
+                audioClip = _footsteps[1];
+            }
+            //give random sound in first bank
+            else
+                audioClip = _footsteps[0];
+            AudioManager.instance.PlayOneShotSound("Player", audioClip, transform.position, 
+                                                  (_isCrouching?_footsteps.volume*_crouchAttenuation:_footsteps.volume),
+                                                   _footsteps.spatialBlend, _footsteps.priority);
+        }
 
-        AudioSources[_audioToUse].Play();
-        _audioToUse = (_audioToUse == 0) ? 1 : 0;
+     
     }
 
     /*********************************************************/

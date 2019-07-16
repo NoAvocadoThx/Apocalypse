@@ -23,7 +23,7 @@ public class CharacterManager : MonoBehaviour
     private CharacterController _characterController = null;
     private GameSceneManager _gameSceneManager = null;
     private int _AIBodypartLayer = -1;
-    private bool canDoDmg = false;
+   // private bool canDoDmg = false;
 
 
     /*********************************************************/

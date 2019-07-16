@@ -7,7 +7,7 @@ public class AIZombieState_Feeding : AIZombieState
     //inspector 
     [SerializeField] float _slerpSpeed = 5.0f;
     [SerializeField] Transform _bloodParticleMount = null;
-    [SerializeField] [Range(0.01f, 1.0f)] float _bloodParticleBurstTime = 0.1f;
+   // [SerializeField] [Range(0.01f, 1.0f)] float _bloodParticleBurstTime = 0.1f;
     [SerializeField] [Range(1, 100)] int _bloodParticleBurstAmount = 10;
 
     //private 
