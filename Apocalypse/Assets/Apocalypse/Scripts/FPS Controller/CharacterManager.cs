@@ -79,7 +79,7 @@ public class CharacterManager : MonoBehaviour
            
 
         }
-        if (_fpsController)
+        if (_fpsController||_soundEmitter!=null)
         {
             //if player is in low health
             //blood will attract zombies
@@ -127,7 +127,7 @@ public class CharacterManager : MonoBehaviour
             if (stateMachine)
             {
                 //take damage
-                stateMachine.TakeDamage(hit.point,ray.direction*1.0f,75,hit.rigidbody,this,0);
+                stateMachine.TakeDamage(hit.point,ray.direction*1.0f,15,hit.rigidbody,this,0);
             }
         }
     }

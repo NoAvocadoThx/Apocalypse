@@ -63,13 +63,7 @@ public class AISoundEmitter : MonoBehaviour
         _interpolator = 0.0f;
     }
 
-    /*********************************************************/
-    private void Update()
-    {
-        //walking radius
-        SetRadius(2.0f);
-        if (Input.GetKeyDown(KeyCode.R)) SetRadius(15.0f);
-    }
+ 
 
 
 

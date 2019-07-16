@@ -16,6 +16,18 @@ public class TrackInfo
 
 
 
+//describe an audio entity in the pool system
+public class AudioPoolItem
+{
+    public GameObject gameObject = null;
+    public Transform transform = null;
+    public AudioSource audioSource = null;
+    public float unimportance = float.MaxValue;
+    public bool Playing = false;
+    public IEnumerator couroutine = null;
+    public ulong ID = 0;
+}
+
 //Provides pooled one-shot functionality with priority system and also
 //wraps the Unity Audio Mixer to make easier manipulation of audiogroup
 //volumes 
