@@ -47,6 +47,9 @@ public class AudioManager : MonoBehaviour
     // Private Variables
     Dictionary<string, TrackInfo> _tracks = new Dictionary<string, TrackInfo>();
     List<AudioPoolItem> _pool = new List<AudioPoolItem>();
+
+    //List
+    List<LayeredAudioSource> _layeredAudio = new List<LayeredAudioSource>();
     //quick search
     Dictionary<ulong, AudioPoolItem> _activePool = new Dictionary<ulong, AudioPoolItem>();
     ulong _idGetter = 0;
@@ -103,7 +106,11 @@ public class AudioManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // Update any layered audio sources
+        foreach (LayeredAudioSource las in _layeredAudio)
+        {
+            if (las != null) las.Update();
+        }
     }
 
 
@@ -340,4 +347,59 @@ public class AudioManager : MonoBehaviour
         PlayOneShotSound(track, clip, position, volume, spatialBlend, priority);
     }
 
+    /*********************************************************/
+    public LayeredAudioSource RegisterLayeredAudioSource(AudioSource source, int layers)
+    {
+        if (source != null && layers > 0)
+        {
+            // First check it doesn't exist already and if so just return the source
+            for (int i = 0; i < _layeredAudio.Count; i++)
+            {
+                LayeredAudioSource item = _layeredAudio[i];
+                if (item != null)
+                {
+                    //if the audio source already exist, return
+                    if (item.audioSource == source)
+                    {
+                        return item;
+                    }
+                }
+            }
+
+            // Create a new layered audio item and add it to the managed list
+            LayeredAudioSource newLayeredAudio = new LayeredAudioSource(source, layers);
+            _layeredAudio.Add(newLayeredAudio);
+
+            return newLayeredAudio;
+        }
+
+        return null;
+    }
+
+    /*********************************************************/
+    //unregister since audio manager is dont destroy object, so
+    //we need to delete them ourselves
+    public void UnregisterLayeredAudioSource(LayeredAudioSource source)
+    {
+        _layeredAudio.Remove((LayeredAudioSource)source);
+    }
+
+    /*********************************************************/
+    //alternative version
+    public void UnregisterLayeredAudioSource(AudioSource source)
+    {
+        for (int i = 0; i < _layeredAudio.Count; i++)
+        {
+            LayeredAudioSource item = _layeredAudio[i];
+            if (item != null)
+            {
+                if (item.audioSource == source)
+                {
+                    _layeredAudio.Remove(item);
+                    return;
+                }
+            }
+        }
+    }
+}
 }

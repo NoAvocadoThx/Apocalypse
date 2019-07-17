@@ -139,6 +139,7 @@ public class LayeredAudioSource
                     AudioClip clip = layer.collection[layer.bank];
 
                     // Calculate the play position based on the time of the layer and store duration
+                    // aka prev playing clip
                     if (clip == layer.clip)
                         layer.time = layer.time % layer.clip.length;
                     else
@@ -149,6 +150,7 @@ public class LayeredAudioSource
 
                     // This is a layer that has focus so we need to chose and play
                     // a new clip from the pool
+                    // check if this is the highest priority layer
                     if (newActiveLayer < i)
                     {
                         // This is the active layer index
@@ -157,6 +159,7 @@ public class LayeredAudioSource
                         refreshAudioSource = true;
                     }
                 }
+                //is not looping, layer time>play time
                 else
                 {
                     // The clip assigned to this layer has finished playing and is not set to loop
@@ -204,6 +207,7 @@ public class LayeredAudioSource
         }
 
         // Remember the currently active layer for the next update check
+        //check isMuted
         _activeLayer = newActiveLayer;
 
         if (_activeLayer != -1 && _audioSource)
