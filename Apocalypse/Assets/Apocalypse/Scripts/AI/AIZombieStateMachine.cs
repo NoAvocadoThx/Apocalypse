@@ -248,6 +248,15 @@ public class AIZombieStateMachine : AIStateMachine
             _animator.SetBool(_crawlHash, isCrawling);
             _animator.SetInteger(_lowerBodyDamageHash, _lowerBodyDmg);
             _animator.SetInteger(_upperBodyDamageHash, _upperBodyDmg);
+            //enable layers
+            if (_lowerBodyDmg > _limpThreshold && _lowerBodyDmg < _crawlThreshold) SetLayerActive("Lower Body", true);
+            else SetLayerActive("Lower Body", false);
+
+            if (_upperBodyDmg > _upperThreshold && _upperBodyDmg < _crawlThreshold)
+                SetLayerActive("Upper Body", true);
+            else SetLayerActive("Upper Body", false);
+
+
         }
 
     }
@@ -358,7 +367,7 @@ public class AIZombieStateMachine : AIStateMachine
 
         //ragdoll to be true
         //if down, crawling, cinematic enabled or attack from behind
-        if (_boneControlType != AIBoneControlType.Animated || isCrawling || cinematicEnabled || attackerPos.z < 0)
+        if (_boneControlType != AIBoneControlType.Animated || isCrawling || IsLayerActive("Cinematic") || attackerPos.z < 0)
             isRagdoll = true;
 
         //not ragdoll

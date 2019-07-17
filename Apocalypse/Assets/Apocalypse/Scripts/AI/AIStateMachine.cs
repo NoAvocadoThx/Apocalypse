@@ -62,7 +62,8 @@ public abstract class AIStateMachine : MonoBehaviour
     protected bool _isTargetReached = false;
     protected List<Rigidbody> _bodyParts = new List<Rigidbody>();
     protected int _AIBodyPartLayer = -1;
-    protected bool _cinematicEnabled = false;
+    //protected bool _cinematicEnabled = false;
+    protected Dictionary<string, bool> _animLayerActive = new Dictionary<string, bool>();
 
     //[SerializeField] so we can see from inspector
     [SerializeField] protected AIStateType _curStateType = AIStateType.Idle;
@@ -88,7 +89,7 @@ public abstract class AIStateMachine : MonoBehaviour
     public bool isTargetReached { get { return _isTargetReached; } }
     public Animator animator { get { return _animator; } }
     public NavMeshAgent navAgent { get { return _navAgent; } }
-    public bool cinematicEnabled { get { return _cinematicEnabled; } set { _cinematicEnabled = value; } }
+   
     public Vector3 sensorPosition
     {
         get
@@ -131,7 +132,24 @@ public abstract class AIStateMachine : MonoBehaviour
         }
     }
 
-    
+
+    /*********************************************************/
+    //disbale or enable layer
+    public void SetLayerActive(string layerName,bool active)
+    {
+        _animLayerActive[layerName] = active;
+    }
+
+    /*********************************************************/
+    public bool IsLayerActive(string layerName)
+    {
+        bool res;
+        if(_animLayerActive.TryGetValue(layerName,out res))
+        {
+            return res;
+        }
+        return false;
+    }
 
     /*********************************************************/
     /// <summary>

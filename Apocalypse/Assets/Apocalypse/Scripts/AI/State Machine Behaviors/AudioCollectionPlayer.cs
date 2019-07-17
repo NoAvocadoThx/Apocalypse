@@ -8,6 +8,8 @@ public class AudioCollectionPlayer : AIStateMachineLink
     [SerializeField] ComChannels _commandChannel = ComChannels.ComChannel1;
     [SerializeField] AudioCollection _collection = null;
     [SerializeField] CustomCurve _customCurve = null;
+    [SerializeField] LayerList _layerList = null;
+   
 
     //private
     int _prevCom = 0;
@@ -37,6 +39,15 @@ public class AudioCollectionPlayer : AIStateMachineLink
         //no sounds if layer weight is 0
         if (layerIndex != 0 && animator.GetLayerWeight(layerIndex).Equals(0.0f)) return;
         if (!_stateMachine) return;
+
+
+        if (_layerList)
+        {
+            for(int i = 0; i < _layerList.count; i++)
+            {
+                if (_stateMachine.IsLayerActive(_layerList[i])) return;
+            }
+        }
         //if custom curve exists use that as animator curve
         int customCommand = (_customCurve == null) ? 0 : Mathf.FloorToInt(_customCurve.Evaluate(animatorStateInfo.normalizedTime - (long)animatorStateInfo.normalizedTime));
         int com;
