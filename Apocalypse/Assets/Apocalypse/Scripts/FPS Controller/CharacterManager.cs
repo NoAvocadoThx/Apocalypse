@@ -11,7 +11,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private Camera _cam = null;
     [SerializeField] private float _health = 100.0f;
     [SerializeField] private AISoundEmitter _soundEmitter = null;
-    [SerializeField] private float _walkRadius = 0.0f;
+    [SerializeField] private float _walkRadius = 0.5f;
     [SerializeField] private float _runRadius = 7.0f;
     [SerializeField] private float _landingRadius = 12.0f;
 
@@ -83,7 +83,7 @@ public class CharacterManager : MonoBehaviour
         {
             //if player is in low health
             //blood will attract zombies
-            float newRadius =Mathf.Max((100.0f-_health)/8.0f, _walkRadius);
+            float newRadius =Mathf.Max((100.0f-_health)/10.0f, _walkRadius);
             switch (_fpsController.movementStatus)
             {
                 //set sound radius
