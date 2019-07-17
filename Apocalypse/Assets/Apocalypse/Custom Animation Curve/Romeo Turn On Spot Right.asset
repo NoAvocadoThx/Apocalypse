@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 201e6994a3b038542addaedf95883ae7, type: 3}
-  m_Name: Romeo Turn On Spot Left
+  m_Name: Romeo Turn On Spot Right
   m_EditorClassIdentifier: 
   _curve:
     serializedVersion: 2
@@ -25,7 +25,34 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.3705321
+      time: 0.49582177
+      value: -0.0013375217
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5044669
+      value: 0.9999995
+      inSlope: 0.011026865
+      outSlope: 0.011026865
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.56
+      value: 1.0013466
+      inSlope: 0.033942223
+      outSlope: 0.033942223
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.57
       value: 0
       inSlope: 0
       outSlope: 0
@@ -34,26 +61,17 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.38366887
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.50133616
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.51677436
+      time: 0.78999996
       value: 0
+      inSlope: 0.021005783
+      outSlope: 0.021005783
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.7909417
+      value: 1.0013466
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -61,26 +79,8 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.71361125
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.73387384
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.81
-      value: 1
+      time: 0.86371094
+      value: 1.0013466
       inSlope: 0.0013523538
       outSlope: 0.0013523538
       tangentMode: 0
@@ -88,16 +88,7 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.4583773
     - serializedVersion: 3
-      time: 0.8489821
-      value: 0
-      inSlope: 0.021393605
-      outSlope: 0.021393605
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 1
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
+      time: 0.87
       value: 0
       inSlope: 0
       outSlope: 0

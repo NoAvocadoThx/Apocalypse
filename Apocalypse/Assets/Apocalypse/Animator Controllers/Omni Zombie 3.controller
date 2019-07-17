@@ -2334,7 +2334,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Zombie Jog
-  m_Speed: 1.35
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 8574710626321485676}
@@ -2350,8 +2350,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: b075c4f27081a5e4baa9ac48ed1b7150,
-    type: 3}
+  m_Motion: {fileID: 7400000, guid: cb2bbd04347b2e5409f8bb126b167cea, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -3313,6 +3312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8248907dbf103c4cb729f6602909776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _stateMachine: {fileID: 0}
   OnEnter: 0
   OnExit: 1
 --- !u!1101 &2038565235070801335
@@ -5331,7 +5331,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Zombie Sprint
-  m_Speed: 1.75
+  m_Speed: 1.35
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 190488609642995596}
@@ -5346,8 +5346,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: b075c4f27081a5e4baa9ac48ed1b7150,
-    type: 3}
+  m_Motion: {fileID: 7400000, guid: cb2bbd04347b2e5409f8bb126b167cea, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

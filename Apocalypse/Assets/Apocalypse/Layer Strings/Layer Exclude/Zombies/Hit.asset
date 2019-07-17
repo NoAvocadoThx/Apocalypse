@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d09e744fdcfb6a499b6ef0bcd9854c7, type: 3}
   m_Name: Hit
   m_EditorClassIdentifier: 
-  _stringList: []
+  _stringList:
+  - Cinematic

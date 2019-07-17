@@ -12,8 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6779af87fb0dffa4d9a312421a582f1a, type: 3}
   m_Name: Zombie Attack
   m_EditorClassIdentifier: 
-  _audioGroup: 
-  _volume: 1
+  _audioGroup: Zombies
+  _volume: 0.187
   _spatialBlend: 1
   _priority: 128
-  _audioClipBanks: []
+  _audioClipBanks:
+  - Clips:
+    - {fileID: 8300000, guid: 7211c711fdc3d894bafc35d4ad40e562, type: 3}
+    - {fileID: 8300000, guid: 0a6b0dee65529f449a45b755301a9358, type: 3}
+    - {fileID: 8300000, guid: e15fd0778abdb6d4fbcb7dc4bcd55374, type: 3}
+    - {fileID: 8300000, guid: d327151fe908bb74b8cd23c167ff4a45, type: 3}
+    - {fileID: 8300000, guid: a8229acba9400804781d683960874bd7, type: 3}
+    - {fileID: 8300000, guid: 97c6aa8c273aae547ae6f14f7a3c319b, type: 3}

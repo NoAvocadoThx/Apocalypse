@@ -10,6 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d09e744fdcfb6a499b6ef0bcd9854c7, type: 3}
-  m_Name: Layer for Base Layer
+  m_Name: Base
   m_EditorClassIdentifier: 
-  _stringList: []
+  _stringList:
+  - Lower Body
+  - Hit
+  - Cinematic
