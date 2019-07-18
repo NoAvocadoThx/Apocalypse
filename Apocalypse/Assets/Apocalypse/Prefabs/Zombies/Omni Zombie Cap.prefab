@@ -980,7 +980,7 @@ MonoBehaviour:
   _replenishRate: 2
   _depletionRate: 0.1
   _reanimationBlendTime: 1.5
-  _reanimationWaitTime: 3
+  _reanimationWaitTime: 2
   _geometryLayers:
     serializedVersion: 2
     m_Bits: 1
@@ -1051,7 +1051,7 @@ MonoBehaviour:
   _repathAudioMaxDuration: 5
   _maxDuration: 40
   _lookAtWeight: 1
-  _lookAtAngleThreshold: 20
+  _lookAtAngleThreshold: 9.2
 --- !u!114 &2182316922177187047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2624,6 +2624,8 @@ MonoBehaviour:
   _parameter: RightHand
   _bloodParticleAmount: 10
   _dmgAmount: 6
+  _doDamageSound: 1
+  _doPainSound: 1
 --- !u!135 &6952000676299482061
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2862,6 +2864,8 @@ MonoBehaviour:
   _parameter: LeftHand
   _bloodParticleAmount: 10
   _dmgAmount: 6
+  _doDamageSound: 1
+  _doPainSound: 1
 --- !u!135 &7148290441347381491
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3324,6 +3328,8 @@ MonoBehaviour:
   _parameter: Mouth
   _bloodParticleAmount: 10
   _dmgAmount: 3
+  _doDamageSound: 1
+  _doPainSound: 1
 --- !u!136 &7883771856614704634
 CapsuleCollider:
   m_ObjectHideFlags: 0

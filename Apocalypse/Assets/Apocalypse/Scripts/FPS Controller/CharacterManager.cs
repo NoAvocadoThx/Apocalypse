@@ -19,6 +19,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private AudioCollection _dmgCollection = null;
     [SerializeField] private AudioCollection _painCollection = null;
     [SerializeField] private float _nextPainSoundTime = 0.0f;
+    [SerializeField] private float _painSoundOffset = 0.35f;
 
     //private 
     private Collider _collider = null;
@@ -26,7 +27,7 @@ public class CharacterManager : MonoBehaviour
     private CharacterController _characterController = null;
     private GameSceneManager _gameSceneManager = null;
     private int _AIBodypartLayer = -1;
-   // private bool canDoDmg = false;
+    // private bool canDoDmg = false;
 
 
     /*********************************************************/
@@ -48,15 +49,15 @@ public class CharacterManager : MonoBehaviour
             info.collider = _collider;
             info.meleeTrigger = _meleeTrigger;
             //register playerInfo to game scene manager
-            _gameSceneManager.RegisterPlayerInfo(_collider.GetInstanceID(),info);
+            _gameSceneManager.RegisterPlayerInfo(_collider.GetInstanceID(), info);
         }
     }
     /*********************************************************/
 
-   
-    public void TakeDamage(float amount)
+
+    public void TakeDamage(float amount, bool doDamage, bool doPain)
     {
-        _health = Mathf.Max(_health - (amount*Time.deltaTime), 0.0f);
+        _health = Mathf.Max(_health - (amount * Time.deltaTime), 0.0f);
         if (_fpsController)
         {
             _fpsController.dragMultiplier = 0.0f;
@@ -64,7 +65,30 @@ public class CharacterManager : MonoBehaviour
         if (_cameraScreenBlood)
         {
             _cameraScreenBlood.minBloodAmount = 1.0f - (_health / 100.0f);
-            _cameraScreenBlood.bloodAmount = Mathf.Min(_cameraScreenBlood.minBloodAmount + 0.3f,1);
+            _cameraScreenBlood.bloodAmount = Mathf.Min(_cameraScreenBlood.minBloodAmount + 0.3f, 1);
+        }
+        //sounds
+        if (AudioManager.instance)
+        {
+            if (doDamage && _dmgCollection)
+            {
+                AudioManager.instance.PlayOneShotSound(_dmgCollection.audioGroup, _dmgCollection.audioClip, transform.position,
+                                                       _dmgCollection.volume, _dmgCollection.spatialBlend, _dmgCollection.priority);
+            }
+            if (doPain && _painCollection != null && _nextPainSoundTime < Time.time)
+            {
+                AudioClip painClip = _painCollection.audioClip;
+                if (painClip)
+                {
+                    _nextPainSoundTime = Time.time + painClip.length;
+                    StartCoroutine(AudioManager.instance.PlayOneShotSoundDelayed(_painCollection.audioGroup, painClip,
+                                                                                      transform.position,
+                                                                                      _painCollection.volume,
+                                                                                      _painCollection.spatialBlend,
+                                                                                      _painSoundOffset,
+                                                                                      _painCollection.priority));
+                }
+            }
         }
     }
 
@@ -73,33 +97,33 @@ public class CharacterManager : MonoBehaviour
     /*********************************************************/
     public void Update()
     {
-        
+
         //when press left key
-        if (Input.GetMouseButtonDown(0)&&_fpsController.movementStatus!=PlayerMoveStatus.Running)
+        if (Input.GetMouseButtonDown(0) && _fpsController.movementStatus != PlayerMoveStatus.Running)
         {
             DoDamage();
-          
-           
+
+
 
         }
-        if (_fpsController||_soundEmitter!=null)
+        if (_fpsController || _soundEmitter != null)
         {
             //if player is in low health
             //blood will attract zombies
-            float newRadius =Mathf.Max((100.0f-_health)/10.0f, _walkRadius);
+            float newRadius = Mathf.Max((100.0f - _health) / 10.0f, _walkRadius);
             switch (_fpsController.movementStatus)
             {
                 //set sound radius
-                case PlayerMoveStatus.Landing:newRadius = Mathf.Max(newRadius, _landingRadius);break;
-                case PlayerMoveStatus.Running:newRadius = Mathf.Max(newRadius, _runRadius);break;
-                //case PlayerMoveStatus.Walking:newRadius = Mathf.Max(newRadius, _walkRadius);break;
+                case PlayerMoveStatus.Landing: newRadius = Mathf.Max(newRadius, _landingRadius); break;
+                case PlayerMoveStatus.Running: newRadius = Mathf.Max(newRadius, _runRadius); break;
+                    //case PlayerMoveStatus.Walking:newRadius = Mathf.Max(newRadius, _walkRadius);break;
 
 
             }
             _soundEmitter.SetRadius(newRadius);
             _fpsController.dragMultiplierLimit = Mathf.Max(_health / 100.0f, 0.25f);
         }
-        
+
 
 
     }
@@ -107,10 +131,10 @@ public class CharacterManager : MonoBehaviour
 
     /*********************************************************/
 
-    public void DoDamage(int hitDir=0)
+    public void DoDamage(int hitDir = 0)
     {
 
-        if (!_cam||!_gameSceneManager)
+        if (!_cam || !_gameSceneManager)
         {
             Debug.Log("no CAM or no gameSceneManager");
         }
@@ -123,14 +147,14 @@ public class CharacterManager : MonoBehaviour
         //hit-- the collider we hit
         //range -- <1000m
         //only take mask for fourth parameter
-        isHit = Physics.Raycast(ray,out hit,1000.0f,1<<_AIBodypartLayer);
+        isHit = Physics.Raycast(ray, out hit, 1000.0f, 1 << _AIBodypartLayer);
         if (isHit)
         {
             AIStateMachine stateMachine = _gameSceneManager.GetAIStateMachine(hit.rigidbody.GetInstanceID());
             if (stateMachine)
             {
                 //take damage
-                stateMachine.TakeDamage(hit.point,ray.direction*1.0f,15,hit.rigidbody,this,0);
+                stateMachine.TakeDamage(hit.point, ray.direction * 1.0f, 15, hit.rigidbody, this, 0);
             }
         }
     }

@@ -12,8 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6779af87fb0dffa4d9a312421a582f1a, type: 3}
   m_Name: Zombie Damage
   m_EditorClassIdentifier: 
-  _audioGroup: 
-  _volume: 1
+  _audioGroup: Zombies
+  _volume: 0.319
   _spatialBlend: 1
   _priority: 128
-  _audioClipBanks: []
+  _audioClipBanks:
+  - Clips:
+    - {fileID: 8300000, guid: 426681eb23919a145b62c74730aa6f95, type: 3}
+    - {fileID: 8300000, guid: ce3f9f50c88381542992a521169dc72e, type: 3}
+    - {fileID: 8300000, guid: 5ac7daa66537dff4cb4263a7669bf84c, type: 3}
+    - {fileID: 8300000, guid: 63b48ca648eddb94897fccffb8a31e08, type: 3}
+    - {fileID: 8300000, guid: a205b5fcfd70e554b9f4143420637305, type: 3}

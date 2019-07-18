@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Zombie Roaming
   m_EditorClassIdentifier: 
   _audioGroup: Zombies
-  _volume: 0.293
-  _spatialBlend: 0
+  _volume: 0.298
+  _spatialBlend: 1
   _priority: 128
   _audioClipBanks:
   - Clips:

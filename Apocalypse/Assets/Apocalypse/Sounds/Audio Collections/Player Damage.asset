@@ -10,10 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6779af87fb0dffa4d9a312421a582f1a, type: 3}
-  m_Name: Player
+  m_Name: Player Damage
   m_EditorClassIdentifier: 
-  _audioGroup: 
-  _volume: 1
+  _audioGroup: Player
+  _volume: 0.132
   _spatialBlend: 1
   _priority: 128
-  _audioClipBanks: []
+  _audioClipBanks:
+  - Clips:
+    - {fileID: 8300000, guid: 3cf05012778b96e42b102d2ab8755148, type: 3}
+    - {fileID: 8300000, guid: 95f4605106a4fa94f90e4ebcb51428d1, type: 3}
+    - {fileID: 8300000, guid: 654dc8225eb5bb04cb893a077fd055e3, type: 3}
+    - {fileID: 8300000, guid: 399774ae57aa01f4096eb16c29db5788, type: 3}
+    - {fileID: 8300000, guid: 86d6396e438e5354ab378ab4fb04de53, type: 3}
+    - {fileID: 8300000, guid: ad1f47ea3da8fa24aae3342026763323, type: 3}
+    - {fileID: 8300000, guid: 523a148782de57a489035062abb3bbc9, type: 3}

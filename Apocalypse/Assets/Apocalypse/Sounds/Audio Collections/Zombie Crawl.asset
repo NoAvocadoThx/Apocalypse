@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6779af87fb0dffa4d9a312421a582f1a, type: 3}
   m_Name: Zombie Crawl
   m_EditorClassIdentifier: 
-  _audioGroup: 
-  _volume: 1
+  _audioGroup: Zombies
+  _volume: 0.223
   _spatialBlend: 1
   _priority: 128
-  _audioClipBanks: []
+  _audioClipBanks:
+  - Clips:
+    - {fileID: 8300000, guid: e78c1c5fdd5282245a881eb2b1b7e345, type: 3}
+    - {fileID: 8300000, guid: d930b35681e0bea4f90add596481667f, type: 3}
+    - {fileID: 8300000, guid: 1aca25cdac118a947b503144a1330805, type: 3}
+    - {fileID: 8300000, guid: fb8b457b6a0b8e440bb98cba163d643e, type: 3}

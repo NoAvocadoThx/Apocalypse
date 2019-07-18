@@ -632,6 +632,10 @@ MonoBehaviour:
   _walkRadius: 2
   _runRadius: 7
   _landingRadius: 12
+  _dmgCollection: {fileID: 11400000, guid: 441d17b0684fcd849939f04e99b893bc, type: 2}
+  _painCollection: {fileID: 11400000, guid: fb83485ff3cd6014cadea1e8a2d163a8, type: 2}
+  _nextPainSoundTime: 0
+  _painSoundOffset: 0.35
 --- !u!143 &483897639
 CharacterController:
   m_ObjectHideFlags: 0
@@ -34964,6 +34968,10 @@ MonoBehaviour:
   _walkRadius: 0.5
   _runRadius: 7
   _landingRadius: 12
+  _dmgCollection: {fileID: 0}
+  _painCollection: {fileID: 0}
+  _nextPainSoundTime: 0
+  _painSoundOffset: 0.35
 --- !u!1 &1219914816
 GameObject:
   m_ObjectHideFlags: 0
@@ -71679,16 +71687,6 @@ PrefabInstance:
       propertyPath: _waypointNetwork
       value: 
       objectReference: {fileID: 1296459041}
-    - target: {fileID: 2182316922177186972, guid: 1bceac22d520a25418e86ba1396376d5,
-        type: 3}
-      propertyPath: _lowerBodyDmg
-      value: 78
-      objectReference: {fileID: 0}
-    - target: {fileID: 2182316922177186968, guid: 1bceac22d520a25418e86ba1396376d5,
-        type: 3}
-      propertyPath: _lookAtAngleThreshold
-      value: 9.2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1bceac22d520a25418e86ba1396376d5, type: 3}
 --- !u!1001 &9142827318001799490

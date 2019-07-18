@@ -12,8 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6779af87fb0dffa4d9a312421a582f1a, type: 3}
   m_Name: Player Pain
   m_EditorClassIdentifier: 
-  _audioGroup: 
-  _volume: 1
+  _audioGroup: Player
+  _volume: 0.213
   _spatialBlend: 1
   _priority: 128
-  _audioClipBanks: []
+  _audioClipBanks:
+  - Clips:
+    - {fileID: 8300000, guid: 455d8299d50a4af419abaeed9bbebdcc, type: 3}
+    - {fileID: 8300000, guid: 619f11134ea53d348a7ff43b5e919023, type: 3}
+    - {fileID: 8300000, guid: 632a7fb451b6bec458b6678f57eb4756, type: 3}
+    - {fileID: 8300000, guid: df93da6796f9fda4d9724db32985ab82, type: 3}
+    - {fileID: 8300000, guid: c104d750931189e4d8013d51928ef0bd, type: 3}
+    - {fileID: 8300000, guid: 5414dae3b7b044b4a87d39019ff0199c, type: 3}
+    - {fileID: 8300000, guid: 8a6777dacf064a448864fe89ecc21deb, type: 3}

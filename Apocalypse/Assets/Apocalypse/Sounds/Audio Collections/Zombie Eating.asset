@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6779af87fb0dffa4d9a312421a582f1a, type: 3}
   m_Name: Zombie Eating
   m_EditorClassIdentifier: 
-  _audioGroup: 
-  _volume: 1
+  _audioGroup: Zombies
+  _volume: 0.264
   _spatialBlend: 1
   _priority: 128
-  _audioClipBanks: []
+  _audioClipBanks:
+  - Clips:
+    - {fileID: 8300000, guid: 69bd9bdb4d2cac44aacea1665df0ebd5, type: 3}
+    - {fileID: 8300000, guid: 2c3ca425dfa3d1e458237e7e619fa375, type: 3}
+    - {fileID: 8300000, guid: ee7f315201097cc4b8bcb9c84349e743, type: 3}
+    - {fileID: 8300000, guid: 03226d33da5542c4eb031bd344314e8b, type: 3}

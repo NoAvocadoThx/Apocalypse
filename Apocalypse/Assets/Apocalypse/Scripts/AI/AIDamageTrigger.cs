@@ -8,13 +8,17 @@ public class AIDamageTrigger : MonoBehaviour
     [SerializeField] string _parameter = "";
     [SerializeField] int _bloodParticleAmount = 10;
     [SerializeField] float _dmgAmount = 1.0f;
+    [SerializeField] bool _doDamageSound = true;
+    [SerializeField] bool _doPainSound = true;
 
     //private
     AIStateMachine _stateMachine = null;
     Animator _animator = null;
     int _parameterHash = -1;
     GameSceneManager _gameSceneManager = null;
+    private bool _firstContact = false;
 
+    /*********************************************************/
     private void Start()
     {
         _stateMachine = transform.root.GetComponentInChildren<AIStateMachine>();
@@ -26,6 +30,16 @@ public class AIDamageTrigger : MonoBehaviour
         _gameSceneManager = GameSceneManager.instance;
     }
 
+
+    /*********************************************************/
+    void OnTriggerEnter(Collider col)
+    {
+        if (!_animator)
+            return;
+        //if target is player and taking dmg from player
+        if (col.gameObject.CompareTag("Player") && _animator.GetFloat(_parameterHash) > 0.9f)
+            _firstContact = true;
+    }
     /*********************************************************/
     void OnTriggerStay(Collider other)
     {
@@ -51,10 +65,11 @@ public class AIDamageTrigger : MonoBehaviour
                 PlayerInfo info = _gameSceneManager.GetPlayerInfo(other.GetInstanceID());
                 if (info != null && info.characterManager != null)
                 {
-                    Debug.Log("sd Player!");
-                    info.characterManager.TakeDamage(_dmgAmount);
+                    //Debug.Log("sd Player!");
+                    info.characterManager.TakeDamage(_dmgAmount, _doDamageSound && _firstContact, _doPainSound);
                 }
             }
+            _firstContact = false;
 
         }
 
