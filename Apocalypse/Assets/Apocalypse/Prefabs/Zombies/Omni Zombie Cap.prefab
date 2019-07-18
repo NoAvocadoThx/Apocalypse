@@ -1050,7 +1050,7 @@ MonoBehaviour:
   _repathAudioMinDuration: 0.25
   _repathAudioMaxDuration: 5
   _maxDuration: 40
-  _lookAtWeight: 0.7
+  _lookAtWeight: 1
   _lookAtAngleThreshold: 20
 --- !u!114 &2182316922177187047
 MonoBehaviour:

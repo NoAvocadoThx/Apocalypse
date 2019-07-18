@@ -1051,7 +1051,7 @@ ModelImporter:
     - name: rPinky1
       parentName: rHand
       position: {x: -0.075154886, y: 0.017120967, z: -0.030372344}
-      rotation: {x: 0.39941618, y: -0.046604384, z: 0.004210755, w: 0.91557467}
+      rotation: {x: 0.3994162, y: -0.046604387, z: 0.0042107557, w: 0.9155747}
       scale: {x: 0.9999999, y: 1, z: 1}
     - name: rPinky2
       parentName: rPinky1
@@ -1071,7 +1071,7 @@ ModelImporter:
     - name: rThumb1
       parentName: rHand
       position: {x: -0.02351521, y: -0.0041785906, z: 0.02770195}
-      rotation: {x: -0.17839932, y: 0.28618398, z: 0.16208424, w: 0.92736244}
+      rotation: {x: -0.17839934, y: 0.28618398, z: 0.16208425, w: 0.92736244}
       scale: {x: 0.9999999, y: 1.0000001, z: 1}
     - name: rThumb2
       parentName: rThumb1
@@ -1116,7 +1116,7 @@ ModelImporter:
     - name: rFoot
       parentName: rShin
       position: {x: -0.4540598, y: 0.0000012405217, z: -0.00000042864121}
-      rotation: {x: -0.029294625, y: -0.7228647, z: 0.111015916, w: 0.6813839}
+      rotation: {x: -0.015587678, y: -0.81840026, z: 0.13713257, w: 0.5578285}
       scale: {x: 1, y: 1, z: 0.9999999}
     armTwist: 0.5
     foreArmTwist: 0.5

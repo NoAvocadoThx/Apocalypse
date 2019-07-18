@@ -419,6 +419,10 @@ public class AIZombieStateMachine : AIStateMachine
             if (_navAgent) _navAgent.enabled = false;
             if (_animator) _animator.enabled = false;
             if (_collider) _collider.enabled = false;
+            //Mute audio roaming
+            if (_layeredAudioSource!=null) _layeredAudioSource.Mute(true);
+
+
             //not anymore tracking target, just reset state
             //may go to alerted state
 

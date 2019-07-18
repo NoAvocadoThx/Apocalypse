@@ -15,7 +15,10 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private float _runRadius = 7.0f;
     [SerializeField] private float _landingRadius = 12.0f;
 
-
+    //Pain Damage audio
+    [SerializeField] private AudioCollection _dmgCollection = null;
+    [SerializeField] private AudioCollection _painCollection = null;
+    [SerializeField] private float _nextPainSoundTime = 0.0f;
 
     //private 
     private Collider _collider = null;

@@ -13,9 +13,16 @@ public class AudioLayer
     public float duration = 0.0f;
     public bool isMuted = false;
 }
+//define a interface
+public interface ILayeredAudioSource
+{
+    bool Play(AudioCollection pool, int bank, int layer, bool looping = true);
+    void Stop(int layerIndex);
+    void Mute(int layerIndex, bool mute);
+    void Mute(bool mute);
+}
 
-
-public class LayeredAudioSource
+public class LayeredAudioSource:ILayeredAudioSource
 {
     public AudioSource audioSource { get { return _audioSource; } }
 
@@ -201,6 +208,7 @@ public class LayeredAudioSource
                 _audioSource.spatialBlend = layer.collection.spatialBlend;
                 _audioSource.time = layer.time;
                 _audioSource.loop = false;
+                //assign audio collection to correct mixer output
                 _audioSource.outputAudioMixerGroup = AudioManager.instance.GetAudioGroupFromTrackName(layer.collection.audioGroup);
                 _audioSource.Play();
             }

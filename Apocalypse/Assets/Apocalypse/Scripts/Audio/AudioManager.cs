@@ -348,7 +348,7 @@ public class AudioManager : MonoBehaviour
     }
 
     /*********************************************************/
-    public LayeredAudioSource RegisterLayeredAudioSource(AudioSource source, int layers)
+    public ILayeredAudioSource RegisterLayeredAudioSource(AudioSource source, int layers)
     {
         if (source != null && layers > 0)
         {
@@ -379,7 +379,7 @@ public class AudioManager : MonoBehaviour
     /*********************************************************/
     //unregister since audio manager is dont destroy object, so
     //we need to delete them ourselves
-    public void UnregisterLayeredAudioSource(LayeredAudioSource source)
+    public void UnregisterLayeredAudioSource(ILayeredAudioSource source)
     {
         _layeredAudio.Remove((LayeredAudioSource)source);
     }
@@ -402,4 +402,4 @@ public class AudioManager : MonoBehaviour
         }
     }
 }
-}
+

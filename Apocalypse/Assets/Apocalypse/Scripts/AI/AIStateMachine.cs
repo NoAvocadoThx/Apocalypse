@@ -83,7 +83,10 @@ public abstract class AIStateMachine : MonoBehaviour
     protected Collider _collider = null;
     protected Transform _transform = null;
 
-    
+  
+    // Layered Audio Control
+    protected ILayeredAudioSource _layeredAudioSource = null;
+
     // Public properties
     public bool inMeleeRange { get; set; }
     public bool isTargetReached { get { return _isTargetReached; } }
@@ -138,6 +141,9 @@ public abstract class AIStateMachine : MonoBehaviour
     public void SetLayerActive(string layerName,bool active)
     {
         _animLayerActive[layerName] = active;
+        //which layer we want to stop
+        if (active == false && _layeredAudioSource != null)
+            _layeredAudioSource.Stop(_animator.GetLayerIndex(layerName));
     }
 
     /*********************************************************/
@@ -150,6 +156,24 @@ public abstract class AIStateMachine : MonoBehaviour
         }
         return false;
     }
+    /*********************************************************/
+    public bool PlayAudio(AudioCollection clipPool, int bank, int layer, bool looping = true)
+    {
+        if (_layeredAudioSource == null) return false;
+        return _layeredAudioSource.Play(clipPool, bank, layer, looping);
+    }
+    /*********************************************************/
+    public void StopAudio(int layer)
+    {
+        if (_layeredAudioSource != null)
+            _layeredAudioSource.Stop(layer);
+    }
+    /*********************************************************/
+    public void MuteAudio(bool mute)
+    {
+        if (_layeredAudioSource != null)
+            _layeredAudioSource.Mute(mute);
+    }
 
     /*********************************************************/
     /// <summary>
@@ -161,6 +185,10 @@ public abstract class AIStateMachine : MonoBehaviour
         _animator = GetComponent<Animator>();
         _navAgent = GetComponent<NavMeshAgent>();
         _collider = GetComponent<Collider>();
+
+
+        // Cache Audio Source Reference for Layered AI Audio
+        AudioSource audioSource = GetComponent<AudioSource>();
 
         _AIBodyPartLayer = LayerMask.NameToLayer("AI Body Part");
         if (GameSceneManager.instance != null)
@@ -184,6 +212,12 @@ public abstract class AIStateMachine : MonoBehaviour
                     GameSceneManager.instance.RegisterAIStateMachine(bodyPart.GetInstanceID(), this);
                 }
             }
+        }
+
+        // Register the Layered Audio Source
+        if (_animator && audioSource && AudioManager.instance)
+        {
+            _layeredAudioSource = AudioManager.instance.RegisterLayeredAudioSource(audioSource, _animator.layerCount);
         }
     }
 
@@ -514,6 +548,16 @@ public abstract class AIStateMachine : MonoBehaviour
             _curState = _states[state];
             _curStateType = state;
             _curState.OnEnterState();
+        }
+    }
+
+    /*********************************************************/
+    //destroy audio source
+    protected virtual void OnDestroy()
+    {
+        if (_layeredAudioSource != null && AudioManager.instance)
+        {
+            AudioManager.instance.UnregisterLayeredAudioSource(_layeredAudioSource);
         }
     }
 }
