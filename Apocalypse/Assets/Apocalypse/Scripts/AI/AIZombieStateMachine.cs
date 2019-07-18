@@ -39,13 +39,16 @@ public class AIZombieStateMachine : AIStateMachine
     [SerializeField] LayerMask _geometryLayers = 0;
     [SerializeField] AISoundEmitter _screamPrefab = null;
 
+    [SerializeField] AudioCollection _ragdollCollection = null;
+
+
     // Private
     private int _seeking = 0;
     private bool _feeding = false;
     private bool _crawling = false;
     private int _attackType = 0;
     private float _speed = 0.0f;
-    
+    private float _nextRagdollSoundTime = 0;
 
     //Ragdoll
     private AIBoneControlType _boneControlType = AIBoneControlType.Animated;
@@ -278,12 +281,15 @@ public class AIZombieStateMachine : AIStateMachine
             system.Emit(60);
         }
         float hitStrenth = force.magnitude;
+        float prevHealth = _health;
         //health -= dmg;
         //is in ragdoll state
         if (_boneControlType == AIBoneControlType.Ragdoll)
         {
             if (body)
             {
+                //play sounds when ragdoll
+
                 if (hitStrenth > 1.0f)
                 {
                     body.AddForce(force, ForceMode.Impulse);
@@ -331,7 +337,18 @@ public class AIZombieStateMachine : AIStateMachine
         //if (health <= 0) isRagdoll = true;
         if (body)
         {
-           
+            //play ragdoll sounds
+            if (Time.time > _nextRagdollSoundTime && _ragdollCollection && _health > 0)
+            {
+                AudioClip clip = _ragdollCollection[1];
+                if (clip)
+                {
+                    //make sure to play sound after current sound ends
+                    _nextRagdollSoundTime = Time.time + clip.length;
+                    AudioManager.instance.PlayOneShotSound(_ragdollCollection.audioGroup, clip, pos, _ragdollCollection.volume, _ragdollCollection.spatialBlend, _ragdollCollection.priority);
+                }
+;
+            }
 
             //only when player hit head, reduce health of zombie
             if (body.CompareTag("Head"))
@@ -422,11 +439,23 @@ public class AIZombieStateMachine : AIStateMachine
             //Mute audio roaming
             if (_layeredAudioSource!=null) _layeredAudioSource.Mute(true);
 
+            //play ragdoll sound [1]
+            if (Time.time > _nextRagdollSoundTime && _ragdollCollection && prevHealth > 0)
+            {
+                AudioClip clip = _ragdollCollection[0];
+                if (clip)
+                {
+                    //make sure to play sound after current sound ends
+                    _nextRagdollSoundTime = Time.time + clip.length;
+                    AudioManager.instance.PlayOneShotSound(_ragdollCollection.audioGroup, clip, pos, _ragdollCollection.volume, _ragdollCollection.spatialBlend, _ragdollCollection.priority);
+                }
+;
+            }
 
             //not anymore tracking target, just reset state
             //may go to alerted state
 
-            
+
             inMeleeRange = false;
             foreach (Rigidbody body_i in _bodyParts)
             {

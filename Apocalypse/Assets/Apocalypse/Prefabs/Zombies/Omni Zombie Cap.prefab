@@ -985,6 +985,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   _screamPrefab: {fileID: 0}
+  _ragdollCollection: {fileID: 11400000, guid: 2cc210a20529dc444ae28d24ee2d1b71, type: 2}
 --- !u!114 &2182316922177186971
 MonoBehaviour:
   m_ObjectHideFlags: 0

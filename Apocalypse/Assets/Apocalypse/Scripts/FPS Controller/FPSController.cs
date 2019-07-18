@@ -126,6 +126,8 @@ public class FPSController : MonoBehaviour
     [SerializeField] private float _runSpeed = 4.5f;
     [SerializeField] private float _jumpSpeed = 7.5f;
     [SerializeField] private float _crouchSpeed = 1.0f;
+    [SerializeField] private float _staminaDepletion = 5.0f;
+    [SerializeField] private float _staminaRecover=10.0f;
     [SerializeField] private float _stickToGroundForce = 5.0f;
     [SerializeField] private float _gravityMultiplier = 2.5f;
     [SerializeField] private float _runStepLengthen = 0.75f;
@@ -133,6 +135,7 @@ public class FPSController : MonoBehaviour
     [SerializeField] private GameObject _flashLight = null;
     [SerializeField] private AudioCollection _footsteps = null;
     [SerializeField] private float _crouchAttenuation = 0.2f;
+    [SerializeField] private bool _flashOnAtStart = true;
 
     // Use Standard Assets Mouse Look class for mouse input -> Camera Look Control
     [SerializeField] private UnityStandardAssets.Characters.FirstPerson.MouseLook _mouseLook = new UnityStandardAssets.Characters.FirstPerson.MouseLook();
@@ -149,6 +152,8 @@ public class FPSController : MonoBehaviour
     private bool _isShooting = false;
     private Vector3 _localSpaceCameraPos = Vector3.zero;
     private float _controllerHeight = 0.0f;
+    private float _stamina = 100.0f;
+    private bool _freezeMovement = false;
 
     // Timers
     private float _fallingTimer = 0.0f;

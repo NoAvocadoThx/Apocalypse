@@ -28,6 +28,7 @@ public class HandGun : MonoBehaviour
     private int _isShootingHash = Animator.StringToHash("isShooting");
     private int _isCrouchingHash = Animator.StringToHash("isCrouching");
     private int _isAimingHash = Animator.StringToHash("isAiming");
+    private int _isReload = Animator.StringToHash("reload");
 
 
    
@@ -55,7 +56,10 @@ public class HandGun : MonoBehaviour
        
         _animator.SetBool(_isRunningHash, (_fPSController.movementStatus == PlayerMoveStatus.Running));
         _animator.SetBool(_isCrouchingHash, (_fPSController.movementStatus == PlayerMoveStatus.Crouching));
-        
+        if (Input.GetButtonDown("Reload"))
+        {
+            _animator.SetBool(_isReload, true);
+        }
     }
 
     /*********************************************************/
