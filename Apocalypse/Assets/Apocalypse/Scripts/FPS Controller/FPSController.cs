@@ -352,21 +352,24 @@ public class FPSController : MonoBehaviour
     {
         if (AudioManager.instance && _footsteps)
         {
-            AudioClip audioClip;
-            if (_isCrouching)
+            if (!_isJumping)
             {
-                //give random sound in second bank
-                audioClip = _footsteps[1];
+                AudioClip audioClip;
+                if (_isCrouching)
+                {
+                    //give random sound in second bank
+                    audioClip = _footsteps[1];
+                }
+                //give random sound in first bank
+                else
+                    audioClip = _footsteps[0];
+                AudioManager.instance.PlayOneShotSound("Player", audioClip, transform.position,
+                                                      (_isCrouching ? _footsteps.volume * _crouchAttenuation : _footsteps.volume),
+                                                       _footsteps.spatialBlend, _footsteps.priority);
             }
-            //give random sound in first bank
-            else
-                audioClip = _footsteps[0];
-            AudioManager.instance.PlayOneShotSound("Player", audioClip, transform.position, 
-                                                  (_isCrouching?_footsteps.volume*_crouchAttenuation:_footsteps.volume),
-                                                   _footsteps.spatialBlend, _footsteps.priority);
-        }
 
-     
+
+        }
     }
 
     /*********************************************************/

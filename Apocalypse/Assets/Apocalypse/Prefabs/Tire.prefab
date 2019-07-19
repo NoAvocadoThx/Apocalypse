@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8473342075984837957}
   - component: {fileID: 1647065059621208590}
   - component: {fileID: 4011515609309454292}
-  m_Layer: 0
+  m_Layer: 17
   m_Name: Tire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6552653960128572934}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
