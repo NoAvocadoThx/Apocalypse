@@ -59,6 +59,7 @@ public class HandGun : MonoBehaviour
         if (Input.GetButtonDown("Reload"))
         {
             _animator.SetBool(_isReload, true);
+            
         }
     }
 

@@ -20,6 +20,7 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private AudioCollection _painCollection = null;
     [SerializeField] private float _nextPainSoundTime = 0.0f;
     [SerializeField] private float _painSoundOffset = 0.35f;
+    [SerializeField] private PlayerHUD _playerHUD = null;
 
     //private 
     private Collider _collider = null;
@@ -30,6 +31,10 @@ public class CharacterManager : MonoBehaviour
     // private bool canDoDmg = false;
 
 
+
+
+    public float health { get { return _health; } }
+    public float stamina { get { return _fpsController != null ? _fpsController.stamina : 0.0f; } }
     /*********************************************************/
 
 
@@ -51,6 +56,8 @@ public class CharacterManager : MonoBehaviour
             //register playerInfo to game scene manager
             _gameSceneManager.RegisterPlayerInfo(_collider.GetInstanceID(), info);
         }
+        // Start fading in
+        if (_playerHUD) _playerHUD.Fade(2.0f, ScreenFadeType.FadeIn);
     }
     /*********************************************************/
 
@@ -124,7 +131,7 @@ public class CharacterManager : MonoBehaviour
             _fpsController.dragMultiplierLimit = Mathf.Max(_health / 100.0f, 0.25f);
         }
 
-
+        if (_playerHUD) _playerHUD.Invalidate(this);
 
     }
 

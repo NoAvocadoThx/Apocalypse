@@ -65,7 +65,7 @@ public class AIDamageTrigger : MonoBehaviour
                 PlayerInfo info = _gameSceneManager.GetPlayerInfo(other.GetInstanceID());
                 if (info != null && info.characterManager != null)
                 {
-                    //Debug.Log("sd Player!");
+                    Debug.Log("sd Player!");
                     info.characterManager.TakeDamage(_dmgAmount, _doDamageSound && _firstContact, _doPainSound);
                 }
             }

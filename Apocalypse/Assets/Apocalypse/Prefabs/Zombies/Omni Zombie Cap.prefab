@@ -922,7 +922,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2182316922177186960}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.47
   m_Height: 1.97
@@ -998,7 +998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95c269b3e44d1ee4a94c91d81cb70a1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _idleTimeRange: {x: 5, y: 10}
+  _idleTimeRange: {x: 50, y: 60}
 --- !u!114 &2182316922177186970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1028,7 +1028,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxDuration: 10
   _waypointAngleThreshold: 25
-  _threatAngleThreshhold: 10
+  _threatAngleThreshhold: 5
   _directionChangeTime: 1.5
   _slerpSpeed: 45
 --- !u!114 &2182316922177186968
@@ -1045,14 +1045,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   _slerpSpeed: 5
-  _repathDistanceMultiplier: 0.035
+  _repathDistanceMultiplier: 0.04
   _repathVisualMinDuration: 0.05
   _repathVisualMaxDuration: 5
   _repathAudioMinDuration: 0.25
   _repathAudioMaxDuration: 5
   _maxDuration: 40
-  _lookAtWeight: 1
-  _lookAtAngleThreshold: 9.2
+  _lookAtWeight: 0.7
+  _lookAtAngleThreshold: 90
 --- !u!114 &2182316922177187047
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1712,7 +1712,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0010553957, y: -0.36544675, z: 0.007909101}
+  m_ConnectedAnchor: {x: 0.0010553957, y: -0.3654467, z: 0.007909101}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -2069,7 +2069,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.113110796, y: -0.13621573, z: -0.0037582503}
+  m_ConnectedAnchor: {x: -0.113110796, y: -0.13621567, z: -0.0037582503}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -2624,7 +2624,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parameter: RightHand
   _bloodParticleAmount: 10
-  _dmgAmount: 6
+  _dmgAmount: 10
   _doDamageSound: 1
   _doPainSound: 1
 --- !u!135 &6952000676299482061
@@ -2638,8 +2638,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.14
-  m_Center: {x: 0.16, y: 0, z: 0}
+  m_Radius: 0.26
+  m_Center: {x: 0.22, y: 0, z: 0}
 --- !u!1 &6952368502155530012
 GameObject:
   m_ObjectHideFlags: 0
@@ -2864,7 +2864,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parameter: LeftHand
   _bloodParticleAmount: 10
-  _dmgAmount: 6
+  _dmgAmount: 10
   _doDamageSound: 1
   _doPainSound: 1
 --- !u!135 &7148290441347381491
@@ -2878,8 +2878,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.14
-  m_Center: {x: -0.14, y: 0, z: 0}
+  m_Radius: 0.26
+  m_Center: {x: -0.22, y: -0.07, z: 0}
 --- !u!1 &7167175767063826610
 GameObject:
   m_ObjectHideFlags: 0
@@ -3308,7 +3308,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7883771856614704636}
   m_LocalRotation: {x: 0.19509031, y: 0, z: 0, w: 0.98078537}
-  m_LocalPosition: {x: -0, y: 0.107, z: -0.186}
+  m_LocalPosition: {x: -0, y: 0.001, z: 0.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8852266616612030014}
@@ -3328,7 +3328,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parameter: Mouth
   _bloodParticleAmount: 10
-  _dmgAmount: 3
+  _dmgAmount: 8
   _doDamageSound: 1
   _doPainSound: 1
 --- !u!136 &7883771856614704634
@@ -3342,7 +3342,7 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.05
-  m_Height: 0.49
+  m_Height: 1.09
   m_Direction: 2
   m_Center: {x: 0, y: -0.06, z: 0.48}
 --- !u!1 &7883771856729023705
