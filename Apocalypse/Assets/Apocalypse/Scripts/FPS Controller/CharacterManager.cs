@@ -28,6 +28,7 @@ public class CharacterManager : MonoBehaviour
     private CharacterController _characterController = null;
     private GameSceneManager _gameSceneManager = null;
     private int _AIBodypartLayer = -1;
+    private int _interactiveMask = 0;
     // private bool canDoDmg = false;
 
 
@@ -46,6 +47,7 @@ public class CharacterManager : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _gameSceneManager = GameSceneManager.instance;
         _AIBodypartLayer = LayerMask.NameToLayer("AI Body Part");
+        _interactiveMask = 1 << LayerMask.NameToLayer("Interactive");
         if (_gameSceneManager)
         {
             PlayerInfo info = new PlayerInfo();
@@ -56,6 +58,10 @@ public class CharacterManager : MonoBehaviour
             //register playerInfo to game scene manager
             _gameSceneManager.RegisterPlayerInfo(_collider.GetInstanceID(), info);
         }
+
+        // Get rid of really annoying mouse cursor
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         // Start fading in
         if (_playerHUD) _playerHUD.Fade(2.0f, ScreenFadeType.FadeIn);
     }
@@ -104,6 +110,58 @@ public class CharacterManager : MonoBehaviour
     /*********************************************************/
     public void Update()
     {
+        //Interactive stuff
+        Ray ray;
+        RaycastHit hit;
+        RaycastHit[] hits;
+        ray = _cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        // Calculate Ray Length
+        //when look up or down the length will increase
+        float rayLength = Mathf.Lerp(1.0f, 1.8f, Mathf.Abs(Vector3.Dot(_cam.transform.forward, Vector3.up)));
+        // Cast Ray and collect ALL hits
+        hits = Physics.RaycastAll(ray, rayLength, _interactiveMask);
+        //Process the hits for the one with the highest priorty
+        //when it has hits
+        if (hits.Length > 0)
+        {
+            // Used to record the index of the highest priorty
+            int highestPriority = int.MinValue;
+            InteractiveItem priorityObject = null;
+
+            // Iterate through each hit
+            for (int i = 0; i < hits.Length; i++)
+            {
+                // Process next hit
+                hit = hits[i];
+
+                // Fetch its InteractiveItem script from the database
+                InteractiveItem interactiveObject = _gameSceneManager.GetInteractiveItem(hit.collider.GetInstanceID());
+
+                // If this is the highest priority object so far then remember it
+                if (interactiveObject != null && interactiveObject.priority > highestPriority)
+                {
+                    priorityObject = interactiveObject;
+                    highestPriority = priorityObject.priority;
+                }
+            }
+
+            // If we found an object then display its text and process any possible activation
+            if (priorityObject != null)
+            {
+                if (_playerHUD)
+                    _playerHUD.SetInteractionText(priorityObject.GetText());
+                //use the item
+                if (Input.GetButtonDown("Use"))
+                {
+                    priorityObject.Activate(this);
+                }
+            }
+        }
+        else
+        {
+            if (_playerHUD)
+                _playerHUD.SetInteractionText(null);
+        }
 
         //when press left key
         if (Input.GetMouseButtonDown(0) && _fpsController.movementStatus != PlayerMoveStatus.Running)
