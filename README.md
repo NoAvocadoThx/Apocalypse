@@ -1,5 +1,5 @@
 # Description
-first person shooting survival game. With Unity navagation system.
+first person zombie shooting survival game. 
 
 # Dev Log
 https://sites.google.com/view/apocalypse-log/home
