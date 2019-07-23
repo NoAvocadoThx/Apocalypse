@@ -1,5 +1,5 @@
 # Description
-first person zombie shooting survival game. 
+Asylum of the Dead(original name: Apocalypse) is a first person zombie shooting survival game. 
 
 # Dev Log
 https://sites.google.com/view/apocalypse-log/home
